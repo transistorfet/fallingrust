@@ -1,0 +1,6 @@
+
+* need better mouse control; mouse down/up events, and move move events rather than just click
+* need a way of displaying a framerate or frame draw time without itself affecting performance
+
+
+
