@@ -1,5 +1,5 @@
 
-use crate::cells::{ CellType, Cell };
+use crate::cells::{ Cell, CellType, CellTypeProperties };
 
 use crate::{ log, rand };
 
@@ -8,7 +8,7 @@ pub struct Space {
     width: u32,
     height: u32,
     run: bool,
-    generation: u32,
+    generation: u8,
     cells: Vec<Cell>,
 }
 
@@ -18,7 +18,7 @@ impl Space {
         let mut cells = Vec::with_capacity(length as usize);
 
         for _ in 0..length {
-            cells.push(Cell::random());
+            cells.push(Cell::empty());
         }
 
         Space {
@@ -52,52 +52,59 @@ impl Space {
     }
 
     pub fn add(&mut self, x: i32, y: i32, cell_type: CellType) {
-        let i = self.get_index(x as u32, y as u32);
-        self.cells[i].cell_type = cell_type;
+        if let Some(i) = self.checked_index(x, y) {
+            if self.cells[i].cell_type == CellType::Empty || cell_type == CellType::Empty {
+                self.cells[i].cell_type = cell_type;
+            }
+        }
     }
 
     pub fn tick(&mut self) {
         self.generation  = self.generation + 1;
 
         for y in (0..(self.height as i32)).rev() {
-            for x in (0..(self.width as i32)).rev() {
+            for x in 0..(self.width as i32) {
+                // Sweeping left to right to left removes the bias in the x direction, but not the y direction
+                // I'm not yet sure why the bias exists in the first place, but I suspect it has to do with the generation/update tracking
+                //let x = if y % 2 == 0 { x } else { self.width as i32 - x - 1 };
+
                 let i = self.get_index(x as u32, y as u32);
                 let cell = self.get_cell_at(i);
 
                 // Only simulate cells that haven't already been moved
                 if self.generation != cell.generation {
-                    self.simulate_cell(x, y, cell.cell_type);
+                    self.simulate_cell(x, y, cell);
+                    self.cells[i].generation = self.generation;
                 }
             }
         }
     }
 
-    pub fn simulate_cell(&mut self, x: i32, y: i32, cell_type: CellType) {
+    pub fn simulate_cell(&mut self, x: i32, y: i32, cell: Cell) {
         let i = self.get_index(x as u32, y as u32);
 
-        match cell_type {
+        match cell.cell_type {
             CellType::Empty => { },
 
+            // Fixed Solids
             CellType::Rock => {
-                //if let Some(ni) = self.checked_index_is_empty(x, y + 1) {
-                //    self.swap_cells(i, ni);
-                //}
+
             },
 
+            // Powdered Solids
             CellType::Sand => {
                 let d = if rand() > 0.5 { 1 } else { -1 };
 
                 let check = vec!(
                     (x, y + 1),
                     (x + d, y + 1),
-                    (x - d, y + 1),
-                    //(x + d, y),
-                    //(x - d, y),
                 );
 
-                self.check_swap_from_list(i, check);
+                self.check_swap_from_list(i, check, Space::check_density);
             },
 
+            // Liquids
+            CellType::Oil |
             CellType::Water => {
                 let d = if rand() > 0.5 { 1 } else { -1 };
 
@@ -109,24 +116,45 @@ impl Space {
                     (x - d, y),
                 );
 
-                self.check_swap_from_list(i, check);
+                self.check_swap_from_list(i, check, Space::check_density);
             },
 
+            // Gases
+            CellType::Propane => {
+                let dx = random_modifier();
+                let dy = random_modifier();
+
+                let check = vec!(
+                    (x + dx, y + dy),
+                );
+
+                self.check_swap_from_list(i, check, Space::check_empty);
+            },
         }
     }
 
-    fn check_swap_from_list(&mut self, i: usize, check: Vec<(i32, i32)>) {
-        for (x, y) in check.iter() {
-            //if let Some(ni) = self.checked_index_is_empty(*x, *y) {
+    fn check_density(source: &CellTypeProperties, dest: &CellTypeProperties) -> bool {
+        source.density > dest.density
+    }
+
+    fn check_empty(source: &CellTypeProperties, dest: &CellTypeProperties) -> bool {
+        dest.cell_type == CellType::Empty
+    }
+
+    fn check_swap_from_list(&mut self, i: usize, list: Vec<(i32, i32)>, can_move: fn(&CellTypeProperties, &CellTypeProperties) -> bool) {
+        for (x, y) in list.iter() {
             if let Some(ni) = self.checked_index(*x, *y) {
                 let i_prop = CellType::get_properties(self.get_cell_type_at(i));
                 let ni_prop = CellType::get_properties(self.get_cell_type_at(ni));
-                if i_prop.density > ni_prop.density {
+                if can_move(&i_prop, &ni_prop) {
                     self.swap_cells(i, ni);
                     break;
                 }
             } 
         }
+
+        // Update the generation for the current cell if it wont move
+        self.cells[i].generation = self.generation;
     }
 
 
@@ -135,19 +163,6 @@ impl Space {
             None
         } else {
             Some(self.get_index(x as u32, y as u32))
-        }
-    }
-
-    fn checked_index_is_empty(&self, x: i32, y: i32) -> Option<usize> {
-        match self.checked_index(x, y) {
-            Some(i) => {
-                if self.get_cell_type_at(i) == CellType::Empty {
-                    Some(i)
-                } else {
-                    None
-                }
-            }
-            None => None
         }
     }
 
@@ -164,13 +179,26 @@ impl Space {
     }
 
     fn update_cell(&mut self, i: usize, cell_type: CellType) {
-        self.cells[i] = Cell { cell_type, generation: self.generation };
+        self.cells[i].cell_type = cell_type;
+        self.cells[i].generation = self.generation;
     }
 
     fn swap_cells(&mut self, i: usize, j: usize) {
-        let i_cell_type = self.cells[i].cell_type;
-        self.cells[i] = Cell { cell_type: self.cells[j].cell_type, generation: self.generation };
-        self.cells[j] = Cell { cell_type: i_cell_type, generation: self.generation };
+        let i_cell = self.cells[i];
+        self.cells[i] = self.cells[j];
+        self.cells[j] = i_cell;
+
+        self.cells[i].generation = self.generation;
+        self.cells[j].generation = self.generation;
+    }
+}
+
+
+fn random_modifier() -> i32 {
+    match rand() {
+        x if x < 0.33 => 1,
+        x if x < 0.66 => -1,
+        _ => 0,
     }
 }
 

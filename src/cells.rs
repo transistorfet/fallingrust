@@ -15,17 +15,20 @@ pub enum CellType {
     Rock,
     Sand,
     Water,
+    Oil,
+    Propane,
 }
 
 
-static CELL_TYPES: [CellType; 4] = [
-    CellType::Empty,
+static CELL_TYPES: [CellType; 5] = [
     CellType::Rock,
     CellType::Sand,
-    CellType::Water
+    CellType::Water,
+    CellType::Oil,
+    CellType::Propane,
 ];
 
-static CELL_PROPERTIES: [CellTypeProperties; 4] = [
+static CELL_PROPERTIES: [CellTypeProperties; 6] = [
     CellTypeProperties {
         cell_type: CellType::Empty,
         density: 0.0,
@@ -41,6 +44,14 @@ static CELL_PROPERTIES: [CellTypeProperties; 4] = [
     CellTypeProperties {
         cell_type: CellType::Water,
         density: 1.0,
+    },
+    CellTypeProperties {
+        cell_type: CellType::Oil,
+        density: 0.8,
+    },
+    CellTypeProperties {
+        cell_type: CellType::Propane,
+        density: 0.1,
     },
 ];
 
@@ -68,13 +79,23 @@ impl CellType {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Cell {
     pub cell_type: CellType,
-    pub generation: u32,
+    pub temp: u16,
+    pub generation: u8,
 }
 
 impl Cell {
+    pub fn empty() -> Cell {
+        Cell {
+            cell_type: CellType::Empty,
+            temp: 20,
+            generation: 0,
+        }
+    }
+
     pub fn random() -> Cell {
         Cell {
             cell_type: CellType::random(),
+            temp: 20,
             generation: 0,
         }
     }

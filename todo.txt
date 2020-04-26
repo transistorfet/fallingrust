@@ -1,5 +1,11 @@
 
-* need better mouse control; mouse down/up events, and move move events rather than just click
+* the window size should adapt so that it's usable on mobile
+* there is an issue when pouring sand into water, since the column of sand is continuous to the top, the water will actually flow up until it gets to where the
+  mouse is, and then squirts out sideways, usually to the left.  There is currently no way for the water to move sideways and displace a third cell from the
+  equation.  It can only swap places with a cell
+
+
+
 * need a way of displaying a framerate or frame draw time without itself affecting performance
 
 

@@ -80,16 +80,19 @@ fn init_button_events(document: &Document, space: Shared<Space>, input: Shared<I
         .get_element_by_id("select-types").unwrap()
         .dyn_into::<HtmlElement>().unwrap();
 
+    create_select_button(&document, &container, input.clone(), "Erase", CellType::Empty);
     create_select_button(&document, &container, input.clone(), "Rock", CellType::Rock);
     create_select_button(&document, &container, input.clone(), "Sand", CellType::Sand);
     create_select_button(&document, &container, input.clone(), "Water", CellType::Water);
+    create_select_button(&document, &container, input.clone(), "Oil", CellType::Oil);
+    create_select_button(&document, &container, input.clone(), "Propane", CellType::Propane);
 
 }
 
 fn create_select_button(document: &Document, container: &HtmlElement, input: Shared<InputTracker>, name: &str, cell_type: CellType) {
     container.append_child(&create_button(&document, name, move || {
         input.borrow_mut().update_selected_type(cell_type);
-    }));
+    })).unwrap();
 }
 
 fn create_button<F>(document: &Document, name: &str, f: F) -> HtmlElement where F: 'static + Fn() -> () {
@@ -144,12 +147,12 @@ fn init_mouse_events(canvas: &HtmlCanvasElement, input: Shared<InputTracker>) {
 
 fn init_draw_events(window: &Window, canvas: HtmlCanvasElement, space: Shared<Space>, input: Shared<InputTracker>) { 
     let mut drawing = false;
-    let mut timer = Timer::start();
+    //let mut timer = Timer::start();
 
     let render_frame = Closure::wrap(Box::new(move || {
         if space.borrow().is_running() && !drawing {
             drawing = true;
-            log(format!("{}", timer.interval()).as_ref());
+            //log(format!("{}", timer.interval()).as_ref());
             advance_simulation(&mut space.borrow_mut(), &input);
             draw_canvas(&canvas, &space.borrow());
             drawing = false;
@@ -174,6 +177,8 @@ fn draw_canvas(canvas: &HtmlCanvasElement, space: &Space) {
         .get_context("2d").unwrap().unwrap()
         .dyn_into::<CanvasRenderingContext2d>().unwrap();
 
+    context.clear_rect(0.0, 0.0, (space.get_width() * CELL_WIDTH) as f64, (space.get_height() * CELL_HEIGHT) as f64);
+
     for draw_type in CellType::iter() {
         // Setting the style once for each type, rather than changing it for each cell in one pass through the cells, speeds up the drawing quite a bit
         context.set_fill_style(&JsValue::from(cell_type_to_colour(*draw_type)));
@@ -196,6 +201,8 @@ fn cell_type_to_colour(cell_type: CellType) -> &'static str {
         CellType::Rock => "#000000",
         CellType::Sand => "#886611",
         CellType::Water => "#0000FF",
+        CellType::Oil => "#007777",
+        CellType::Propane => "#77FFFF",
     }
 }
 
