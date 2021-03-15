@@ -2,5 +2,7 @@
 Falling Rust
 ============
 
-A simple falling sand game written in Rust and compiled to Web Assembly
+###### *Started April 13, 2020*
+
+A simple falling sand game written in Rust and compiled to Web Assembly.
 

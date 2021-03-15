@@ -86,6 +86,7 @@ fn init_button_events(document: &Document, space: Shared<Space>, input: Shared<I
     create_select_button(&document, &container, input.clone(), "Water", CellType::Water);
     create_select_button(&document, &container, input.clone(), "Oil", CellType::Oil);
     create_select_button(&document, &container, input.clone(), "Propane", CellType::Propane);
+    create_select_button(&document, &container, input.clone(), "Fire", CellType::Fire)
 
 }
 
@@ -167,7 +168,8 @@ fn init_draw_events(window: &Window, canvas: HtmlCanvasElement, space: Shared<Sp
 
 fn advance_simulation(space: &mut Space, input: &Shared<InputTracker>) {
     if let Some((x, y)) = input.borrow().get_pos() {
-        space.add(x, y, input.borrow().get_selected_type());
+        let offset = if space.get_generation() % 2 == 0 { 0 } else { 1 };
+        space.add(x + offset, y, input.borrow().get_selected_type());
     }
     space.tick();
 }
@@ -203,6 +205,7 @@ fn cell_type_to_colour(cell_type: CellType) -> &'static str {
         CellType::Water => "#0000FF",
         CellType::Oil => "#007777",
         CellType::Propane => "#77FFFF",
+        CellType::Fire => "#FF3300",
     }
 }
 

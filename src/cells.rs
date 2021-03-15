@@ -6,6 +6,7 @@ use crate::rand;
 pub struct CellTypeProperties {
     pub cell_type: CellType,
     pub density: f64,
+    pub flammable: bool,
 }
 
 
@@ -17,41 +18,54 @@ pub enum CellType {
     Water,
     Oil,
     Propane,
+    Fire,
 }
 
 
-static CELL_TYPES: [CellType; 5] = [
+static CELL_TYPES: [CellType; 6] = [
     CellType::Rock,
     CellType::Sand,
     CellType::Water,
     CellType::Oil,
     CellType::Propane,
+    CellType::Fire,
 ];
 
-static CELL_PROPERTIES: [CellTypeProperties; 6] = [
+static CELL_PROPERTIES: [CellTypeProperties; 7] = [
     CellTypeProperties {
         cell_type: CellType::Empty,
         density: 0.0,
+        flammable: false,
     },
     CellTypeProperties {
         cell_type: CellType::Rock,
         density: 3.0,
+        flammable: false,
     },
     CellTypeProperties {
         cell_type: CellType::Sand,
         density: 3.0,
+        flammable: false,
     },
     CellTypeProperties {
         cell_type: CellType::Water,
         density: 1.0,
+        flammable: false,
     },
     CellTypeProperties {
         cell_type: CellType::Oil,
         density: 0.8,
+        flammable: true,
     },
     CellTypeProperties {
         cell_type: CellType::Propane,
         density: 0.1,
+        flammable: true,
+    },
+    CellTypeProperties {
+        cell_type: CellType::Fire,
+        density: 0.0,
+        flammable: false,
     },
 ];
 
@@ -79,7 +93,7 @@ impl CellType {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Cell {
     pub cell_type: CellType,
-    pub temp: u16,
+    pub temp: i16,
     pub generation: u8,
 }
 
