@@ -34,7 +34,7 @@ static CELL_TYPES: [CellType; 6] = [
 
 static CELL_PROPERTIES: [CellTypeProperties; 7] = [
     CellTypeProperties {
-        name: "Erase",
+        name: "Empty",
         cell_type: CellType::Empty,
         density: 0.0,
         flammable: false,
@@ -72,7 +72,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 7] = [
     CellTypeProperties {
         name: "Fire",
         cell_type: CellType::Fire,
-        density: 0.0,
+        density: 0.01,
         flammable: false,
     },
 ];

@@ -74,24 +74,15 @@ impl SwappingSim {
                     cell.temp = 0;
                 }
 
-                let mut cells_lit = 0;
-                for dx in -1..2 {
-                    for dy in -1..2 {
-                        if let Some(ni) = space.get_index_checked(x + dx, y + dy) {
-                            let dest_cell = space.get_cell_at(ni);
-                            let dest_props = CellType::get_properties(dest_cell.cell_type);
-                            if dest_props.flammable {
-                                dest_cell.init(CellType::Fire);
-                                cells_lit += 1;
-                                if cells_lit >= 1 {
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                if cell.temp > 300 && rand() < 0.4 {
+                    cell.temp = cell.temp * 3 / 5;
+                    let cell = *cell;
+                    self.spawn_new(space, x, y, cell);
                 }
 
-                if rand() < 0.50 {
+                self.ignite_neighbours(space, x, y);
+
+                if rand() < 0.25 {
                     self.move_gas(space, x, y);
                 }
             },
@@ -137,6 +128,46 @@ impl SwappingSim {
         self.check_swap_from_list(space, i, check, SwappingSim::check_density);
     }
 
+    fn spawn_new(&mut self, space: &mut Space, x: i32, y: i32, cell: Cell) {
+        let dx = if rand() > 0.5 { 1 } else { -1 };
+        let dy = if rand() > 0.5 { 1 } else { -1 };
+
+        let list = vec![
+            (x + dx, y + dy),
+            (x - dx, y + dy),
+            (x + dx, y - dy),
+            (x - dx, y - dy),
+        ];
+
+        for (x, y) in list.iter() {
+            if let Some(ni) = space.get_index_checked(*x, *y) {
+                if space.get_cell_type_at(ni) == CellType::Empty {
+                    space.set_cell(ni, &cell);
+                    break;
+                }
+            }
+        }
+    }
+
+    fn ignite_neighbours(&mut self, space: &mut Space, x: i32, y: i32) {
+        let mut cells_lit = 0;
+        for dx in -1..=1 {
+            for dy in -1..=1 {
+                if let Some(ni) = space.get_index_checked(x + dx, y + dy) {
+                    let dest_cell = space.get_cell_at(ni);
+                    let dest_props = CellType::get_properties(dest_cell.cell_type);
+                    if dest_props.flammable {
+                        dest_cell.init(CellType::Fire);
+                        cells_lit += 1;
+                        if cells_lit >= 1 {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     fn check_density(source: &CellTypeProperties, dest: &CellTypeProperties) -> bool {
         source.density > dest.density
@@ -153,9 +184,6 @@ impl SwappingSim {
                 }
             } 
         }
-
-        // Update the generation for the current cell if it wont move
-        space.update_cell_generation(i);
     }
 }
 
