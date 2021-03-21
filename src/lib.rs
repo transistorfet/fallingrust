@@ -8,8 +8,11 @@ mod cells;
 mod space;
 mod input;
 mod world;
-mod timer;
+mod simulator;
 mod ui;
+
+#[allow(dead_code)]
+mod timer;
 
 use crate::world::World;
 

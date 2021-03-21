@@ -114,12 +114,26 @@ impl Cell {
         }
     }
 
+    #[allow(dead_code)]
     pub fn random() -> Cell {
         Cell {
             cell_type: CellType::random(),
             temp: 20,
             generation: 0,
         }
+    }
+
+    pub fn init(&mut self, cell_type: CellType) {
+        self.cell_type = cell_type;
+
+        match cell_type {
+            CellType::Fire => self.temp = (rand() * 1000.0) as i16,
+            _ => {},
+        }
+    }
+
+    pub fn get_properties<'a>(&self) -> &'a CellTypeProperties {
+        CellType::get_properties(self.cell_type)
     }
 }
 

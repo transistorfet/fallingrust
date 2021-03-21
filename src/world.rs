@@ -1,12 +1,13 @@
 
 use crate::space::Space;
-use crate::cells::CellType;
 use crate::input::InputTracker;
+use crate::simulator::{ Simulator, SwappingSim, CellularSim };
 
 pub struct World {
     pub run: bool,
     pub space: Space,
     pub input: InputTracker,
+    simulator: Box<dyn Simulator>,
 }
 
 impl World {
@@ -15,6 +16,7 @@ impl World {
             run: true,
             space: Space::new(width, height),
             input: InputTracker::new(),
+            simulator: Box::new(SwappingSim { }),
         }
     }
 
@@ -31,7 +33,7 @@ impl World {
             let offset = if self.space.get_generation() % 2 == 0 { 0 } else { 1 };
             self.space.add(x + offset, y, self.input.get_selected_type());
         }
-        self.space.tick();
+        self.simulator.tick(&mut self.space);
     }
 }
 

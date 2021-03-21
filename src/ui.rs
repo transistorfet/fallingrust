@@ -6,12 +6,15 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{ Document, Window, HtmlElement, HtmlCanvasElement, CanvasRenderingContext2d, MouseEvent };
 
-use crate::timer::Timer;
 use crate::world::World;
 use crate::space::Space;
 use crate::cells::CellType;
-use crate::input::InputTracker;
-use crate::{ REFRESH, CELL_WIDTH, CELL_HEIGHT, alert, log };
+use crate::{ REFRESH, CELL_WIDTH, CELL_HEIGHT };
+
+#[allow(unused_imports)]
+use crate::timer::Timer;
+#[allow(unused_imports)]
+use crate::{ alert, log};
 
 
 pub fn init_dom(world: Rc<RefCell<World>>) {
