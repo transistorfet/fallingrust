@@ -4,6 +4,7 @@ use crate::rand;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct CellTypeProperties {
+    pub name: &'static str,
     pub cell_type: CellType,
     pub density: f64,
     pub flammable: bool,
@@ -33,36 +34,43 @@ static CELL_TYPES: [CellType; 6] = [
 
 static CELL_PROPERTIES: [CellTypeProperties; 7] = [
     CellTypeProperties {
+        name: "Erase",
         cell_type: CellType::Empty,
         density: 0.0,
         flammable: false,
     },
     CellTypeProperties {
+        name: "Rock",
         cell_type: CellType::Rock,
         density: 3.0,
         flammable: false,
     },
     CellTypeProperties {
+        name: "Sand",
         cell_type: CellType::Sand,
         density: 3.0,
         flammable: false,
     },
     CellTypeProperties {
+        name: "Water",
         cell_type: CellType::Water,
         density: 1.0,
         flammable: false,
     },
     CellTypeProperties {
+        name: "Oil",
         cell_type: CellType::Oil,
         density: 0.8,
         flammable: true,
     },
     CellTypeProperties {
+        name: "Propane",
         cell_type: CellType::Propane,
         density: 0.1,
         flammable: true,
     },
     CellTypeProperties {
+        name: "Fire",
         cell_type: CellType::Fire,
         density: 0.0,
         flammable: false,

@@ -1,15 +1,4 @@
 
-use std::rc::Rc;
-use std::cell::RefCell;
-
-pub type Shared<T> = Rc<RefCell<T>>;
-
-pub fn shared<T>(t: T) -> Shared<T> {
-    Rc::new(RefCell::new(t))
-}
-
-
-
 pub struct Timer {
     start: u32,
 }

@@ -15,7 +15,6 @@ macro_rules! swap {
 pub struct Space {
     width: u32,
     height: u32,
-    run: bool,
     generation: u8,
     cells: Vec<Cell>,
 }
@@ -32,15 +31,9 @@ impl Space {
         Space {
             width: width,
             height: height,
-            run: true,
             generation: 0,
             cells: cells,
         }
-    }
-
-    pub fn get_cell_type(&self, x: u32, y: u32) -> CellType {
-        let i = self.get_index(x, y);
-        self.cells[i].cell_type
     }
 
     pub fn get_width(&self) -> u32 {
@@ -55,12 +48,9 @@ impl Space {
         self.generation
     }
 
-    pub fn toggle_run(&mut self) {
-        self.run = !self.run;
-    }
-
-    pub fn is_running(&self) -> bool {
-        self.run
+    pub fn get_cell_type(&self, x: u32, y: u32) -> CellType {
+        let i = self.get_index(x, y);
+        self.cells[i].cell_type
     }
 
     pub fn add(&mut self, x: i32, y: i32, cell_type: CellType) {
