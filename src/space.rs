@@ -64,9 +64,15 @@ impl Space {
     }
 
     pub fn add(&mut self, x: i32, y: i32, cell_type: CellType) {
-        if let Some(i) = self.get_index_checked(x, y) {
-            if self.cells[i].cell_type == CellType::Empty || cell_type == CellType::Empty {
-                self.cells[i].init(cell_type);
+        let mut created = 0;
+        for dy in -2..=2 {
+            for dx in -2..=2 {
+                if let Some(i) = self.get_index_checked(x + dx, y + dy) {
+                    if created % 2 == 0 && (self.cells[i].cell_type == CellType::Empty || cell_type == CellType::Empty) {
+                        self.cells[i].init(cell_type);
+                    }
+                    created += 1;
+                }
             }
         }
     }

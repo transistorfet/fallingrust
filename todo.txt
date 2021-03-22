@@ -1,6 +1,11 @@
 
-* you could have a trait that interfaces to a simulation implementation, such that you can either use the brute force sim or the cellular automata sim
-  it might be separate from Space, maybe Space can be a common representation separate from the simulations
+
+* water isn't working too well in that it can be lopsided for a long time.  It should even out more quickly, possible even slosh
+* need a way of displaying a framerate or frame draw time without itself affecting performance
+* make it possible to speed up or slow down (by simulating multiple generations before redrawing)
+* maybe make the scale adjustable
+
+
 
 * the window size should adapt so that it's usable on mobile
 * there is an issue when pouring sand into water, since the column of sand is continuous to the top, the water will actually flow up until it gets to where the
@@ -9,7 +14,7 @@
 
 
 
-* need a way of displaying a framerate or frame draw time without itself affecting performance
+* make it possible to change the simulator backend (but right now, the alternative backends aren't working)
 
 
 

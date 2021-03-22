@@ -26,7 +26,7 @@ impl SwappingSim {
             for x in 0..(space.get_width() as i32) {
                 // Sweeping left to right to left removes the bias in the x direction, but not the y direction
                 // I'm not yet sure why the bias exists in the first place, but I suspect it has to do with the generation/update tracking
-                //let x = if y % 2 == 0 { x } else { self.width as i32 - x - 1 };
+                let x = if y % 2 == 0 { x } else { space.get_width() as i32 - x - 1 };
 
                 let i = space.get_index(x as u32, y as u32);
 
