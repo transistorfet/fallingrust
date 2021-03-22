@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Falling Rust</title>
+
+    <script src="./bootstrap.js"></script>
+
+    <style>
+      #space {
+        border: 1px solid black;
+        float: left;
+      }
+
+      #select-types button {
+        display: block;
+      }
+
+      #top-area {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+
+    <div id="top-area">
+      <canvas id="space"></canvas>
+      <div id="select-types"></div>
+    </div>
+    <div>
+      <div>
+        <button id="play-pause">Play/Pause</button>
+        <span id="frame-rate"></span>
+      </div>
+    </div>
+
+  </body>
+</html>
