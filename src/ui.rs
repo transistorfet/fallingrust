@@ -4,7 +4,7 @@ use std::cell::RefCell;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{ Document, Window, HtmlElement, HtmlCanvasElement, CanvasRenderingContext2d, MouseEvent };
+use web_sys::{ Document, Window, HtmlElement, HtmlCanvasElement, CanvasRenderingContext2d, MouseEvent, TouchEvent };
 
 use crate::world::World;
 use crate::space::Space;
@@ -31,6 +31,7 @@ pub fn init_dom(world: Rc<RefCell<World>>) {
 
     init_button_events(&document, world.clone());
     init_mouse_events(&canvas, world.clone());
+    init_touch_events(&canvas, world.clone());
     init_draw_events(&window, canvas, world.clone());
 }
 
@@ -108,16 +109,56 @@ fn init_mouse_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
         cb.forget();
     }
 
-    let cb = Closure::wrap(Box::new(move |e: MouseEvent| {
-        if world.borrow().input.is_down() {
-            let x = e.offset_x() / CELL_WIDTH as i32;
-            let y = e.offset_y() / CELL_HEIGHT as i32;
-            world.borrow_mut().input.update_pos(x, y);
-        }
-    }) as Box<dyn FnMut(MouseEvent)>);
+    {
+        let cb = Closure::wrap(Box::new(move |e: MouseEvent| {
+            if world.borrow().input.is_down() {
+                let x = e.offset_x() / CELL_WIDTH as i32;
+                let y = e.offset_y() / CELL_HEIGHT as i32;
+                world.borrow_mut().input.update_pos(x, y);
+            }
+        }) as Box<dyn FnMut(MouseEvent)>);
 
-    canvas.set_onmousemove(Some(cb.as_ref().unchecked_ref()));
-    cb.forget();
+        canvas.set_onmousemove(Some(cb.as_ref().unchecked_ref()));
+        cb.forget();
+    }
+}
+
+fn init_touch_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
+    {
+        let world = world.clone();
+        let cb = Closure::wrap(Box::new(move |e: TouchEvent| {
+            let x = e.target_touches().get(0).unwrap().client_x() / CELL_WIDTH as i32;
+            let y = e.target_touches().get(0).unwrap().client_y() / CELL_HEIGHT as i32;
+            world.borrow_mut().input.update_pos(x, y);
+            world.borrow_mut().input.update_down(true);
+        }) as Box<dyn FnMut(TouchEvent)>);
+
+        canvas.set_ontouchstart(Some(cb.as_ref().unchecked_ref()));
+        cb.forget();
+    }
+
+    {
+        let world = world.clone();
+        let cb = Closure::wrap(Box::new(move |_: TouchEvent| {
+            world.borrow_mut().input.update_down(false);
+        }) as Box<dyn FnMut(TouchEvent)>);
+
+        canvas.set_ontouchend(Some(cb.as_ref().unchecked_ref()));
+        cb.forget();
+    }
+
+    {
+        let cb = Closure::wrap(Box::new(move |e: TouchEvent| {
+            if world.borrow().input.is_down() {
+                let x = e.target_touches().get(0).unwrap().client_x() / CELL_WIDTH as i32;
+                let y = e.target_touches().get(0).unwrap().client_y() / CELL_HEIGHT as i32;
+                world.borrow_mut().input.update_pos(x, y);
+            }
+        }) as Box<dyn FnMut(TouchEvent)>);
+
+        canvas.set_ontouchmove(Some(cb.as_ref().unchecked_ref()));
+        cb.forget();
+    }
 }
 
 fn init_draw_events(window: &Window, canvas: HtmlCanvasElement, world: Rc<RefCell<World>>) { 
