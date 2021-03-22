@@ -64,104 +64,125 @@
 /******/ 					"__wbg_log_421388ea5cf05a4e": function(p0i32,p1i32) {
 /******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_log_421388ea5cf05a4e"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_instanceof_Window_a633dbe0900c728a": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_Window_a633dbe0900c728a"](p0i32);
+/******/ 					"__wbg_instanceof_Window_5993230e7331f098": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_Window_5993230e7331f098"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_document_07444f1bbea314bb": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_document_07444f1bbea314bb"](p0i32);
+/******/ 					"__wbg_document_85584f745133c6ad": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_document_85584f745133c6ad"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_setInterval_8132b2c4bdf1d970": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setInterval_8132b2c4bdf1d970"](p0i32,p1i32,p2i32);
+/******/ 					"__wbg_setInterval_8a909112efc87939": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setInterval_8a909112efc87939"](p0i32,p1i32,p2i32);
 /******/ 					},
-/******/ 					"__wbg_createElement_5a267cb074dc073b": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_createElement_5a267cb074dc073b"](p0i32,p1i32,p2i32);
+/******/ 					"__wbg_createElement_9291c0306f179f1e": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_createElement_9291c0306f179f1e"](p0i32,p1i32,p2i32);
 /******/ 					},
-/******/ 					"__wbg_getElementById_633c94a971ae0eb9": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_getElementById_633c94a971ae0eb9"](p0i32,p1i32,p2i32);
+/******/ 					"__wbg_getElementById_85c96642ffb33978": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_getElementById_85c96642ffb33978"](p0i32,p1i32,p2i32);
 /******/ 					},
-/******/ 					"__wbg_setinnerHTML_ebf37095d2177081": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setinnerHTML_ebf37095d2177081"](p0i32,p1i32,p2i32);
+/******/ 					"__wbg_clientX_dc7e2d5befd0cb30": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_clientX_dc7e2d5befd0cb30"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_instanceof_HtmlElement_7e7a87e33735b8a3": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_HtmlElement_7e7a87e33735b8a3"](p0i32);
+/******/ 					"__wbg_clientY_15f94923916dff98": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_clientY_15f94923916dff98"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_setonclick_1c8a214773367c92": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonclick_1c8a214773367c92"](p0i32,p1i32);
+/******/ 					"__wbg_get_fde6d869ccad8137": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_get_fde6d869ccad8137"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_setonmousedown_b2acfb084742527b": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmousedown_b2acfb084742527b"](p0i32,p1i32);
+/******/ 					"__wbg_setinnerHTML_fbaa20055a3b9e5c": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setinnerHTML_fbaa20055a3b9e5c"](p0i32,p1i32,p2i32);
 /******/ 					},
-/******/ 					"__wbg_setonmousemove_3edf3be216810aef": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmousemove_3edf3be216810aef"](p0i32,p1i32);
+/******/ 					"__wbg_instanceof_HtmlElement_f6d482e9f214594e": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_HtmlElement_f6d482e9f214594e"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_setonmouseup_804529612b5c28a6": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmouseup_804529612b5c28a6"](p0i32,p1i32);
+/******/ 					"__wbg_setonclick_7ad3c56451ce4963": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonclick_7ad3c56451ce4963"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_instanceof_CanvasRenderingContext2d_06ca182218e69b94": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_CanvasRenderingContext2d_06ca182218e69b94"](p0i32);
+/******/ 					"__wbg_setonmousedown_537703cf35e93bd4": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmousedown_537703cf35e93bd4"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_setfillStyle_3c07069fd68bd3e9": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setfillStyle_3c07069fd68bd3e9"](p0i32,p1i32);
+/******/ 					"__wbg_setonmousemove_37c1061a696200ac": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmousemove_37c1061a696200ac"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_beginPath_877b4a2bd85a1494": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_beginPath_877b4a2bd85a1494"](p0i32);
+/******/ 					"__wbg_setonmouseup_00d7bc4faa960c8f": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setonmouseup_00d7bc4faa960c8f"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_fill_df2b2dc97317e50a": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_fill_df2b2dc97317e50a"](p0i32);
+/******/ 					"__wbg_setontouchstart_e3abdaa80b536632": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setontouchstart_e3abdaa80b536632"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_rect_d47f6151611c4657": function(p0i32,p1f64,p2f64,p3f64,p4f64) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_rect_d47f6151611c4657"](p0i32,p1f64,p2f64,p3f64,p4f64);
+/******/ 					"__wbg_setontouchend_3c0b3140c1383f83": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setontouchend_3c0b3140c1383f83"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_clearRect_08bd34eb4729bed6": function(p0i32,p1f64,p2f64,p3f64,p4f64) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_clearRect_08bd34eb4729bed6"](p0i32,p1f64,p2f64,p3f64,p4f64);
+/******/ 					"__wbg_setontouchmove_d616ff450dde5d7d": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setontouchmove_d616ff450dde5d7d"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_offsetX_aca50cabf6b6622b": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_offsetX_aca50cabf6b6622b"](p0i32);
+/******/ 					"__wbg_instanceof_CanvasRenderingContext2d_2fc2819b8ff4979a": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_CanvasRenderingContext2d_2fc2819b8ff4979a"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_offsetY_6a241c1438478484": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_offsetY_6a241c1438478484"](p0i32);
+/******/ 					"__wbg_setfillStyle_1b018f07574a0711": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setfillStyle_1b018f07574a0711"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_appendChild_c1802f48577b21f6": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_appendChild_c1802f48577b21f6"](p0i32,p1i32);
+/******/ 					"__wbg_beginPath_a7ecc54095eb7fc8": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_beginPath_a7ecc54095eb7fc8"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_instanceof_HtmlCanvasElement_c6a06fc9a851a478": function(p0i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_HtmlCanvasElement_c6a06fc9a851a478"](p0i32);
+/******/ 					"__wbg_fill_9ccb63e1f46d0fdc": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_fill_9ccb63e1f46d0fdc"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_setwidth_70cc14014c04df22": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setwidth_70cc14014c04df22"](p0i32,p1i32);
+/******/ 					"__wbg_rect_3c11e0cccca41df3": function(p0i32,p1f64,p2f64,p3f64,p4f64) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_rect_3c11e0cccca41df3"](p0i32,p1f64,p2f64,p3f64,p4f64);
 /******/ 					},
-/******/ 					"__wbg_setheight_e962cc78d8658712": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setheight_e962cc78d8658712"](p0i32,p1i32);
+/******/ 					"__wbg_clearRect_3a2ee772f1c05ab2": function(p0i32,p1f64,p2f64,p3f64,p4f64) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_clearRect_3a2ee772f1c05ab2"](p0i32,p1f64,p2f64,p3f64,p4f64);
 /******/ 					},
-/******/ 					"__wbg_getContext_2151b76e11a6eb39": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_getContext_2151b76e11a6eb39"](p0i32,p1i32,p2i32);
+/******/ 					"__wbg_offsetX_fe3496fcb551ca70": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_offsetX_fe3496fcb551ca70"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_call_8487a9f580e47219": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_call_8487a9f580e47219"](p0i32,p1i32);
+/******/ 					"__wbg_offsetY_1100166319c9d7b0": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_offsetY_1100166319c9d7b0"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_targetTouches_3ac3482b75d81e4f": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_targetTouches_3ac3482b75d81e4f"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_appendChild_57f30a01b30ec33c": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_appendChild_57f30a01b30ec33c"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbg_instanceof_HtmlCanvasElement_46dcfe68d7a9fa74": function(p0i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_instanceof_HtmlCanvasElement_46dcfe68d7a9fa74"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_setwidth_be3f75cee9fb1e97": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setwidth_be3f75cee9fb1e97"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbg_setheight_b124b03c752079bd": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_setheight_b124b03c752079bd"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbg_getContext_cbecd1fc57539f80": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_getContext_cbecd1fc57539f80"](p0i32,p1i32,p2i32);
+/******/ 					},
+/******/ 					"__wbg_call_e5847d15cc228e4f": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_call_e5847d15cc228e4f"](p0i32,p1i32);
 /******/ 					},
 /******/ 					"__wbindgen_object_clone_ref": function(p0i32) {
 /******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_object_clone_ref"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_newnoargs_179d393e4626fcf7": function(p0i32,p1i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_newnoargs_179d393e4626fcf7"](p0i32,p1i32);
+/******/ 					"__wbg_newnoargs_2349ba6aefe72376": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_newnoargs_2349ba6aefe72376"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbg_self_eeabd9085c04fc17": function() {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_self_eeabd9085c04fc17"]();
+/******/ 					"__wbg_self_35a0fda3eb965abe": function() {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_self_35a0fda3eb965abe"]();
 /******/ 					},
-/******/ 					"__wbg_window_f110c13310da2c8f": function() {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_window_f110c13310da2c8f"]();
+/******/ 					"__wbg_window_88a6f88dd3a474f1": function() {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_window_88a6f88dd3a474f1"]();
 /******/ 					},
-/******/ 					"__wbg_globalThis_a2669bee93faee43": function() {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_globalThis_a2669bee93faee43"]();
+/******/ 					"__wbg_globalThis_1d843c4ad7b6a1f5": function() {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_globalThis_1d843c4ad7b6a1f5"]();
 /******/ 					},
-/******/ 					"__wbg_global_a5584d717f4d6761": function() {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_global_a5584d717f4d6761"]();
+/******/ 					"__wbg_global_294ce70448e8fbbf": function() {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_global_294ce70448e8fbbf"]();
 /******/ 					},
 /******/ 					"__wbindgen_is_undefined": function(p0i32) {
 /******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_is_undefined"](p0i32);
 /******/ 					},
-/******/ 					"__wbg_random_69f01e50b30c8d0a": function() {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_random_69f01e50b30c8d0a"]();
+/******/ 					"__wbg_random_ee8fd1d6e68e6aca": function() {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbg_random_ee8fd1d6e68e6aca"]();
 /******/ 					},
 /******/ 					"__wbindgen_debug_string": function(p0i32,p1i32) {
 /******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_debug_string"](p0i32,p1i32);
@@ -169,11 +190,14 @@
 /******/ 					"__wbindgen_throw": function(p0i32,p1i32) {
 /******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_throw"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"__wbindgen_closure_wrapper70": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_closure_wrapper70"](p0i32,p1i32,p2i32);
+/******/ 					"__wbindgen_closure_wrapper82": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_closure_wrapper82"](p0i32,p1i32,p2i32);
 /******/ 					},
-/******/ 					"__wbindgen_closure_wrapper72": function(p0i32,p1i32,p2i32) {
-/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_closure_wrapper72"](p0i32,p1i32,p2i32);
+/******/ 					"__wbindgen_closure_wrapper84": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_closure_wrapper84"](p0i32,p1i32,p2i32);
+/******/ 					},
+/******/ 					"__wbindgen_closure_wrapper86": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/fallingrust_bg.js"].exports["__wbindgen_closure_wrapper86"](p0i32,p1i32,p2i32);
 /******/ 					}
 /******/ 				}
 /******/ 			};
@@ -276,7 +300,7 @@
 /******/ 				promises.push(installedWasmModuleData);
 /******/ 			else {
 /******/ 				var importObject = wasmImportObjects[wasmModuleId]();
-/******/ 				var req = fetch(__webpack_require__.p + "" + {"../pkg/fallingrust_bg.wasm":"3462a38b6373e95e5b75"}[wasmModuleId] + ".module.wasm");
+/******/ 				var req = fetch(__webpack_require__.p + "" + {"../pkg/fallingrust_bg.wasm":"b5d78a2725d61304ecc0"}[wasmModuleId] + ".module.wasm");
 /******/ 				var promise;
 /******/ 				if(importObject instanceof Promise && typeof WebAssembly.compileStreaming === 'function') {
 /******/ 					promise = Promise.all([WebAssembly.compileStreaming(req), importObject]).then(function(items) {
