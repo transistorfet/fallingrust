@@ -37,16 +37,9 @@ pub fn init_dom(world: Rc<RefCell<World>>) {
 fn init_button_events(document: &Document, world: Rc<RefCell<World>>) {
     {
         let world = world.clone();
-        let cb = Closure::wrap(Box::new(move || {
+        register_click(document, "play-pause", move || {
             world.borrow_mut().toggle_run();
-        }) as Box<dyn FnMut()>);
-
-        document
-            .get_element_by_id("play-pause").unwrap()
-            .dyn_ref::<HtmlElement>().unwrap()
-            .set_onclick(Some(cb.as_ref().unchecked_ref()));
-
-        cb.forget();
+        });
     }
 
     let container = document
@@ -54,13 +47,10 @@ fn init_button_events(document: &Document, world: Rc<RefCell<World>>) {
         .dyn_into::<HtmlElement>().unwrap();
 
     create_select_button(&document, &container, world.clone(), "Erase", CellType::Empty);
-    create_select_button(&document, &container, world.clone(), "Rock", CellType::Rock);
-    create_select_button(&document, &container, world.clone(), "Sand", CellType::Sand);
-    create_select_button(&document, &container, world.clone(), "Water", CellType::Water);
-    create_select_button(&document, &container, world.clone(), "Oil", CellType::Oil);
-    create_select_button(&document, &container, world.clone(), "Propane", CellType::Propane);
-    create_select_button(&document, &container, world.clone(), "Fire", CellType::Fire)
-
+    for cell_type in CellType::iter() {
+        let props = CellType::get_properties(*cell_type);
+        create_select_button(&document, &container, world.clone(), props.name, *cell_type);
+    }
 }
 
 fn create_select_button(document: &Document, container: &HtmlElement, world: Rc<RefCell<World>>, name: &str, cell_type: CellType) {
@@ -81,6 +71,17 @@ fn create_button<F>(document: &Document, name: &str, f: F) -> HtmlElement where 
 
     cb.forget();
     el
+}
+
+fn register_click<F>(document: &Document, element_id: &str, f: F) where F: 'static + Fn() -> () {
+    let cb = Closure::wrap(Box::new(f) as Box<dyn FnMut()>);
+
+    document
+        .get_element_by_id(element_id).unwrap()
+        .dyn_ref::<HtmlElement>().unwrap()
+        .set_onclick(Some(cb.as_ref().unchecked_ref()));
+
+    cb.forget();
 }
 
 fn init_mouse_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
@@ -166,11 +167,13 @@ fn cell_type_to_colour(cell_type: CellType) -> &'static str {
     match cell_type {
         CellType::Empty => "#FFFFFF",
         CellType::Rock => "#000000",
+        CellType::Wood => "#606040",
         CellType::Sand => "#886611",
         CellType::Water => "#0000FF",
         CellType::Oil => "#007777",
         CellType::Propane => "#77FFFF",
         CellType::Fire => "#FF3300",
+        CellType::Lava => "#993300",
     }
 }
 

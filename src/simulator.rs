@@ -47,6 +47,7 @@ impl SwappingSim {
             CellType::Empty => { },
 
             // Fixed Solids
+            CellType::Wood |
             CellType::Rock => {
 
             },
@@ -65,6 +66,16 @@ impl SwappingSim {
             // Gases
             CellType::Propane => {
                 self.move_gas(space, x, y);
+            },
+
+            CellType::Lava => {
+                cell.temp -= (rand() * 5.0) as i16;
+                if cell.temp < 10 {
+                    cell.cell_type = CellType::Rock;
+                }
+
+                self.ignite_neighbours(space, x, y);
+                self.move_liquid(space, x, y);
             },
 
             CellType::Fire => {
@@ -150,24 +161,15 @@ impl SwappingSim {
     }
 
     fn ignite_neighbours(&mut self, space: &mut Space, x: i32, y: i32) {
-        let mut cells_lit = 0;
-        for dx in -1..=1 {
-            for dy in -1..=1 {
-                if let Some(ni) = space.get_index_checked(x + dx, y + dy) {
-                    let dest_cell = space.get_cell_at(ni);
-                    let dest_props = CellType::get_properties(dest_cell.cell_type);
-                    if dest_props.flammable {
-                        dest_cell.init(CellType::Fire);
-                        cells_lit += 1;
-                        if cells_lit >= 1 {
-                            break;
-                        }
-                    }
-                }
+        self.foreach_neighbour(space, x, y, |cell, props| {
+            if props.flammable {
+                cell.init(CellType::Fire);
+                false
+            } else {
+                true
             }
-        }
+        });
     }
-
 
     fn check_density(source: &CellTypeProperties, dest: &CellTypeProperties) -> bool {
         source.density > dest.density
@@ -183,6 +185,24 @@ impl SwappingSim {
                     break;
                 }
             } 
+        }
+    }
+
+    fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, f: F) where F: Fn(&mut Cell, &CellTypeProperties) -> bool {
+        for dx in -1..=1 {
+            for dy in -1..=1 {
+                if dx == x && dy == y {
+                    continue;
+                }
+
+                if let Some(ni) = space.get_index_checked(x + dx, y + dy) {
+                    let dest_cell = space.get_cell_at(ni);
+                    let dest_props = CellType::get_properties(dest_cell.cell_type);
+                    if !f(dest_cell, dest_props) {
+                        break;
+                    }
+                }
+            }
         }
     }
 }

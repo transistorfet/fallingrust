@@ -15,24 +15,28 @@ pub struct CellTypeProperties {
 pub enum CellType {
     Empty,
     Rock,
+    Wood,
     Sand,
     Water,
     Oil,
     Propane,
     Fire,
+    Lava,
 }
 
 
-static CELL_TYPES: [CellType; 6] = [
+static CELL_TYPES: [CellType; 8] = [
     CellType::Rock,
+    CellType::Wood,
     CellType::Sand,
     CellType::Water,
     CellType::Oil,
     CellType::Propane,
     CellType::Fire,
+    CellType::Lava,
 ];
 
-static CELL_PROPERTIES: [CellTypeProperties; 7] = [
+static CELL_PROPERTIES: [CellTypeProperties; 9] = [
     CellTypeProperties {
         name: "Empty",
         cell_type: CellType::Empty,
@@ -44,6 +48,12 @@ static CELL_PROPERTIES: [CellTypeProperties; 7] = [
         cell_type: CellType::Rock,
         density: 3.0,
         flammable: false,
+    },
+    CellTypeProperties {
+        name: "Wood",
+        cell_type: CellType::Wood,
+        density: 3.0,
+        flammable: true,
     },
     CellTypeProperties {
         name: "Sand",
@@ -73,6 +83,12 @@ static CELL_PROPERTIES: [CellTypeProperties; 7] = [
         name: "Fire",
         cell_type: CellType::Fire,
         density: 0.01,
+        flammable: false,
+    },
+    CellTypeProperties {
+        name: "Lava",
+        cell_type: CellType::Wood,
+        density: 3.0,
         flammable: false,
     },
 ];
@@ -127,8 +143,9 @@ impl Cell {
         self.cell_type = cell_type;
 
         match cell_type {
+            CellType::Lava => self.temp = (1000.0 + rand() * 1000.0) as i16,
             CellType::Fire => self.temp = (rand() * 1000.0) as i16,
-            _ => {},
+            _ => self.temp = 20.0 as i16,
         }
     }
 

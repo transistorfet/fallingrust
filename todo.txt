@@ -1,9 +1,11 @@
 
 
-* water isn't working too well in that it can be lopsided for a long time.  It should even out more quickly, possible even slosh
+* add temperature equalizing, and temp-based ignition
+* add wind or force
+
 * need a way of displaying a framerate or frame draw time without itself affecting performance
 * make it possible to speed up or slow down (by simulating multiple generations before redrawing)
-* maybe make the scale adjustable
+* maybe make the pixel scale adjustable
 
 
 
