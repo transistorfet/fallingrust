@@ -215,6 +215,7 @@ fn cell_type_to_colour(cell_type: CellType) -> &'static str {
         CellType::Propane => "#77FFFF",
         CellType::Fire => "#FF3300",
         CellType::Lava => "#993300",
+        CellType::Acid => "#009966",
     }
 }
 

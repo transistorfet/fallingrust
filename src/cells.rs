@@ -22,10 +22,11 @@ pub enum CellType {
     Propane,
     Fire,
     Lava,
+    Acid,
 }
 
 
-static CELL_TYPES: [CellType; 8] = [
+static CELL_TYPES: [CellType; 9] = [
     CellType::Rock,
     CellType::Wood,
     CellType::Sand,
@@ -34,9 +35,10 @@ static CELL_TYPES: [CellType; 8] = [
     CellType::Propane,
     CellType::Fire,
     CellType::Lava,
+    CellType::Acid,
 ];
 
-static CELL_PROPERTIES: [CellTypeProperties; 9] = [
+static CELL_PROPERTIES: [CellTypeProperties; 10] = [
     CellTypeProperties {
         name: "Empty",
         cell_type: CellType::Empty,
@@ -87,8 +89,14 @@ static CELL_PROPERTIES: [CellTypeProperties; 9] = [
     },
     CellTypeProperties {
         name: "Lava",
-        cell_type: CellType::Wood,
+        cell_type: CellType::Lava,
         density: 3.0,
+        flammable: false,
+    },
+    CellTypeProperties {
+        name: "Acid",
+        cell_type: CellType::Acid,
+        density: 1.2,
         flammable: false,
     },
 ];

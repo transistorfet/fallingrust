@@ -68,6 +68,15 @@ impl SwappingSim {
                 self.move_gas(space, x, y);
             },
 
+            CellType::Acid => {
+                self.foreach_neighbour(space, x, y, |cell, props| {
+                    if cell.cell_type == CellType::Rock && rand() < 0.005 {
+                        cell.init(CellType::Empty);
+                    }
+                });
+                self.move_liquid(space, x, y);
+            },
+
             CellType::Lava => {
                 cell.temp -= (rand() * 5.0) as i16;
                 if cell.temp < 10 {
@@ -162,11 +171,8 @@ impl SwappingSim {
 
     fn ignite_neighbours(&mut self, space: &mut Space, x: i32, y: i32) {
         self.foreach_neighbour(space, x, y, |cell, props| {
-            if props.flammable {
+            if props.flammable && rand() < 0.50 {
                 cell.init(CellType::Fire);
-                false
-            } else {
-                true
             }
         });
     }
@@ -188,7 +194,7 @@ impl SwappingSim {
         }
     }
 
-    fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, f: F) where F: Fn(&mut Cell, &CellTypeProperties) -> bool {
+    fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, f: F) where F: Fn(&mut Cell, &CellTypeProperties) {
         for dx in -1..=1 {
             for dy in -1..=1 {
                 if dx == x && dy == y {
@@ -198,9 +204,7 @@ impl SwappingSim {
                 if let Some(ni) = space.get_index_checked(x + dx, y + dy) {
                     let dest_cell = space.get_cell_at(ni);
                     let dest_props = CellType::get_properties(dest_cell.cell_type);
-                    if !f(dest_cell, dest_props) {
-                        break;
-                    }
+                    f(dest_cell, dest_props);
                 }
             }
         }
