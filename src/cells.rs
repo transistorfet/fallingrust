@@ -8,6 +8,7 @@ pub struct CellTypeProperties {
     pub cell_type: CellType,
     pub density: f64,
     pub flammable: bool,
+    pub dissolvable: bool,
 }
 
 
@@ -17,6 +18,7 @@ pub enum CellType {
     Rock,
     Wood,
     Sand,
+    Gunpowder,
     Water,
     Oil,
     Propane,
@@ -26,10 +28,11 @@ pub enum CellType {
 }
 
 
-static CELL_TYPES: [CellType; 9] = [
+static CELL_TYPES: [CellType; 10] = [
     CellType::Rock,
     CellType::Wood,
     CellType::Sand,
+    CellType::Gunpowder,
     CellType::Water,
     CellType::Oil,
     CellType::Propane,
@@ -38,66 +41,83 @@ static CELL_TYPES: [CellType; 9] = [
     CellType::Acid,
 ];
 
-static CELL_PROPERTIES: [CellTypeProperties; 10] = [
+static CELL_PROPERTIES: [CellTypeProperties; 11] = [
     CellTypeProperties {
         name: "Empty",
         cell_type: CellType::Empty,
         density: 0.0,
         flammable: false,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Rock",
         cell_type: CellType::Rock,
         density: 3.0,
         flammable: false,
+        dissolvable: true,
     },
     CellTypeProperties {
         name: "Wood",
         cell_type: CellType::Wood,
         density: 3.0,
         flammable: true,
+        dissolvable: true,
     },
     CellTypeProperties {
         name: "Sand",
         cell_type: CellType::Sand,
         density: 3.0,
         flammable: false,
+        dissolvable: true,
+    },
+    CellTypeProperties {
+        name: "Gunpowder",
+        cell_type: CellType::Gunpowder,
+        density: 3.0,
+        flammable: true,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Water",
         cell_type: CellType::Water,
         density: 1.0,
         flammable: false,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Oil",
         cell_type: CellType::Oil,
         density: 0.8,
         flammable: true,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Propane",
         cell_type: CellType::Propane,
         density: 0.1,
         flammable: true,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Fire",
         cell_type: CellType::Fire,
         density: 0.01,
         flammable: false,
+        dissolvable: false,
     },
     CellTypeProperties {
         name: "Lava",
         cell_type: CellType::Lava,
         density: 3.0,
         flammable: false,
+        dissolvable: true,
     },
     CellTypeProperties {
         name: "Acid",
         cell_type: CellType::Acid,
         density: 1.2,
         flammable: false,
+        dissolvable: false,
     },
 ];
 

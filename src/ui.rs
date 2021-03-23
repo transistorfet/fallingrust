@@ -210,6 +210,7 @@ fn cell_type_to_colour(cell_type: CellType) -> &'static str {
         CellType::Rock => "#000000",
         CellType::Wood => "#606040",
         CellType::Sand => "#886611",
+        CellType::Gunpowder => "#666666",
         CellType::Water => "#0000FF",
         CellType::Oil => "#007777",
         CellType::Propane => "#77FFFF",

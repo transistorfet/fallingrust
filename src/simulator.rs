@@ -53,7 +53,8 @@ impl SwappingSim {
             },
 
             // Powdered Solids
-            CellType::Sand => {
+            CellType::Sand |
+            CellType::Gunpowder => {
                 self.move_granular(space, x, y);
             },
 
@@ -69,12 +70,20 @@ impl SwappingSim {
             },
 
             CellType::Acid => {
+                let mut expend = false;
                 self.foreach_neighbour(space, x, y, |cell, props| {
-                    if cell.cell_type == CellType::Rock && rand() < 0.005 {
+                    if props.dissolvable && rand() < 0.005 {
                         cell.init(CellType::Empty);
+                        expend = true;
                     }
                 });
-                self.move_liquid(space, x, y);
+
+                if expend {
+                    let cell = space.get_cell_at(i);
+                    cell.init(CellType::Empty);
+                } else {
+                    self.move_liquid(space, x, y);
+                }
             },
 
             CellType::Lava => {
@@ -194,7 +203,7 @@ impl SwappingSim {
         }
     }
 
-    fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, f: F) where F: Fn(&mut Cell, &CellTypeProperties) {
+    fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, mut f: F) where F: FnMut(&mut Cell, &CellTypeProperties) {
         for dx in -1..=1 {
             for dy in -1..=1 {
                 if dx == x && dy == y {
