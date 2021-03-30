@@ -7,6 +7,7 @@ pub struct CellTypeProperties {
     pub name: &'static str,
     pub cell_type: CellType,
     pub density: f64,
+    pub temp_coefficient: f32,
     pub flammable: bool,
     pub dissolvable: bool,
 }
@@ -46,6 +47,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Empty",
         cell_type: CellType::Empty,
         density: 0.0,
+        temp_coefficient: 0.1,
         flammable: false,
         dissolvable: false,
     },
@@ -53,6 +55,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Rock",
         cell_type: CellType::Rock,
         density: 3.0,
+        temp_coefficient: 0.1,
         flammable: false,
         dissolvable: true,
     },
@@ -60,6 +63,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Wood",
         cell_type: CellType::Wood,
         density: 3.0,
+        temp_coefficient: 0.8,
         flammable: true,
         dissolvable: true,
     },
@@ -67,6 +71,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Sand",
         cell_type: CellType::Sand,
         density: 3.0,
+        temp_coefficient: 0.1,
         flammable: false,
         dissolvable: true,
     },
@@ -74,6 +79,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Gunpowder",
         cell_type: CellType::Gunpowder,
         density: 3.0,
+        temp_coefficient: 20.0,
         flammable: true,
         dissolvable: false,
     },
@@ -81,6 +87,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Water",
         cell_type: CellType::Water,
         density: 1.0,
+        temp_coefficient: 0.4,
         flammable: false,
         dissolvable: false,
     },
@@ -88,6 +95,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Oil",
         cell_type: CellType::Oil,
         density: 0.8,
+        temp_coefficient: 10.0,
         flammable: true,
         dissolvable: false,
     },
@@ -95,6 +103,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Propane",
         cell_type: CellType::Propane,
         density: 0.1,
+        temp_coefficient: 200.0,
         flammable: true,
         dissolvable: false,
     },
@@ -102,6 +111,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Fire",
         cell_type: CellType::Fire,
         density: 0.01,
+        temp_coefficient: 1.0,
         flammable: false,
         dissolvable: false,
     },
@@ -109,6 +119,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Lava",
         cell_type: CellType::Lava,
         density: 3.0,
+        temp_coefficient: 100.0,
         flammable: false,
         dissolvable: true,
     },
@@ -116,6 +127,7 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
         name: "Acid",
         cell_type: CellType::Acid,
         density: 1.2,
+        temp_coefficient: 0.1,
         flammable: false,
         dissolvable: false,
     },
@@ -145,16 +157,16 @@ impl CellType {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Cell {
     pub cell_type: CellType,
-    pub temp: i16,
     pub generation: u8,
+    pub temp: f32,
 }
 
 impl Cell {
     pub fn empty() -> Cell {
         Cell {
             cell_type: CellType::Empty,
-            temp: 20,
             generation: 0,
+            temp: 20.0,
         }
     }
 
@@ -162,7 +174,7 @@ impl Cell {
     pub fn random() -> Cell {
         Cell {
             cell_type: CellType::random(),
-            temp: 20,
+            temp: 20.0,
             generation: 0,
         }
     }
@@ -171,9 +183,9 @@ impl Cell {
         self.cell_type = cell_type;
 
         match cell_type {
-            CellType::Lava => self.temp = (1000.0 + rand() * 1000.0) as i16,
-            CellType::Fire => self.temp = (rand() * 1000.0) as i16,
-            _ => self.temp = 20.0 as i16,
+            CellType::Lava => self.temp = 1000.0 + rand() as f32 * 1000.0,
+            CellType::Fire => self.temp = rand() as f32 * 1000.0,
+            _ => self.temp = 20.0,
         }
     }
 

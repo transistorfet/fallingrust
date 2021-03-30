@@ -87,29 +87,30 @@ impl SwappingSim {
             },
 
             CellType::Lava => {
-                cell.temp -= (rand() * 5.0) as i16;
-                if cell.temp < 10 {
+                cell.temp -= rand() as f32 * 5.0;
+                if cell.temp < 10.0 {
                     cell.cell_type = CellType::Rock;
                 }
 
-                self.ignite_neighbours(space, x, y);
+                self.ignite_neighbours(cell.temp, space, x, y);
                 self.move_liquid(space, x, y);
             },
 
             CellType::Fire => {
-                cell.temp -= (rand() * 5.0) as i16;
-                if cell.temp < 10 {
+                cell.temp -= rand() as f32 * 5.0;
+                if cell.temp < 10.0 {
                     cell.cell_type = CellType::Empty;
-                    cell.temp = 0;
+                    cell.temp = 0.0;
                 }
 
-                if cell.temp > 300 && rand() < 0.4 {
-                    cell.temp = cell.temp * 3 / 5;
+                if cell.temp > 300.0 && rand() < 0.4 {
+                    cell.temp = cell.temp * 3.0 / 5.0;
                     let cell = *cell;
                     self.spawn_new(space, x, y, cell);
                 }
 
-                self.ignite_neighbours(space, x, y);
+                let cell = space.get_cell_at(i);
+                self.ignite_neighbours(cell.temp, space, x, y);
 
                 if rand() < 0.25 {
                     self.move_gas(space, x, y);
@@ -178,8 +179,9 @@ impl SwappingSim {
         }
     }
 
-    fn ignite_neighbours(&mut self, space: &mut Space, x: i32, y: i32) {
+    fn ignite_neighbours(&mut self, temp: f32, space: &mut Space, x: i32, y: i32) {
         self.foreach_neighbour(space, x, y, |cell, props| {
+            //if props.flammable && cell.temp > 100.0 {
             if props.flammable && rand() < 0.50 {
                 cell.init(CellType::Fire);
             }

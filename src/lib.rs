@@ -19,8 +19,8 @@ use crate::world::World;
 pub static REFRESH: i32 = 10;
 pub static SPACE_WIDTH: u32 = 320;
 pub static SPACE_HEIGHT: u32 = 160;
-pub static CELL_WIDTH: u32 = 4;
-pub static CELL_HEIGHT: u32 = 4;
+pub static CELL_WIDTH: u32 = 3;
+pub static CELL_HEIGHT: u32 = 3;
 
 #[wasm_bindgen]
 extern {
