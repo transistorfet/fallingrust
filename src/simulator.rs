@@ -180,6 +180,21 @@ impl SwappingSim {
     }
 
     fn ignite_neighbours(&mut self, temp: f32, space: &mut Space, x: i32, y: i32) {
+        /*
+        let i = space.get_index(x as u32, y as u32);
+
+        let coefficient = CellType::get_properties(space.get_cell_type_at(i)).temp_coefficient;
+        let mut total_temp = 0.0;
+        self.foreach_neighbour(space, x, y, |cell, props| {
+            let change = (temp - cell.temp) * 0.1 * (props.temp_coefficient / coefficient);
+            cell.temp += change;
+            total_temp += change;
+        });
+
+        let cell = space.get_cell_at(i);
+        cell.temp -= total_temp;
+        */
+
         self.foreach_neighbour(space, x, y, |cell, props| {
             //if props.flammable && cell.temp > 100.0 {
             if props.flammable && rand() < 0.50 {

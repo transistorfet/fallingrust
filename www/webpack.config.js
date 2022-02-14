@@ -9,6 +9,17 @@ module.exports = {
   },
   mode: "development",
   plugins: [
-    new CopyWebpackPlugin(['index.html'])
+    new CopyWebpackPlugin({ patterns: ['index.html'] })
   ],
+  module: {
+    rules: [
+      {
+        test: /\.wasm$/,
+        type: 'webassembly/sync',
+      }
+    ]
+  },
+  experiments: {
+    syncWebAssembly: true
+  },
 };
