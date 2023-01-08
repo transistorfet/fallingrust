@@ -1,0 +1,5 @@
+
+Publish to gh-pages:
+
+git subtree push --prefix www/dist origin gh-pages
+
