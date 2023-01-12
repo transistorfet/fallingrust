@@ -42,3 +42,13 @@ pub fn rand() -> f64 {
     js_sys::Math::random()
 }
 
+#[macro_export]
+macro_rules! debug_print {
+    () => {
+        log("\n");
+    };
+    ($($arg:tt)*) => {{
+        log(&format!($($arg)*));
+    }};
+}
+

@@ -1,13 +1,13 @@
 
-2020/04/26:
+2020-04-26:
 
-There was an issue where the propane was congregating into one of the corners.  Changing the direction of updating cells caused it to
-change which corner it built up in.  Making it update the x direction back and forth instead of in the same direction made it at least
-distribute evenly along the x axis.  It turned out to be related to the fact that I was only allowing the propane to move diagonally,
-which somehow affected it.  It could also have been related to the random function I was using. (if rand() < 0.5 { 1 } else { -1 }).
+- there was an issue where the propane was congregating into one of the corners.  Changing the direction of updating cells caused it to
+  change which corner it built up in.  Making it update the x direction back and forth instead of in the same direction made it at least
+  distribute evenly along the x axis.  It turned out to be related to the fact that I was only allowing the propane to move diagonally,
+  which somehow affected it.  It could also have been related to the random function I was using. (if rand() < 0.5 { 1 } else { -1 }).
 
-Changing the random function to allow for 1, 0, or -1 made it always go into the top left corner because it was slightly favoring
-a modifier of -1.  Revising the random func to give equal weight to 1 and -1 with a minor bias towards 0 fixed the problem entirely,
-without needing to sweep back and forth
+- changing the random function to allow for 1, 0, or -1 made it always go into the top left corner because it was slightly favoring
+  a modifier of -1.  Revising the random func to give equal weight to 1 and -1 with a minor bias towards 0 fixed the problem entirely,
+  without needing to sweep back and forth
 
 

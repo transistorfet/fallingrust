@@ -17,6 +17,7 @@ impl World {
             space: Space::new(width, height),
             input: InputTracker::new(),
             simulator: Box::new(SwappingSim { }),
+            //simulator: Box::new(CellularSim { }),
         }
     }
 

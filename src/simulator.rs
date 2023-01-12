@@ -1,6 +1,8 @@
 
+use std::convert::TryInto;
+
 #[allow(unused_imports)]
-use crate::{ log, rand };
+use crate::{ log, rand, debug_print };
 use crate::space::Space;
 use crate::cells::{ Cell, CellType, CellTypeProperties };
 
@@ -237,13 +239,113 @@ impl SwappingSim {
     }
 }
 
-macro_rules! swap {
-    ( $x:expr, $y:expr ) => {
-        let tmp = $x;
-        $x = $y;
-        $y = tmp;
+
+enum MatchCell {
+    Exact(CellType),
+    //EmptyOr(CellType),
+    Any,
+}
+
+enum ModifyCell {
+    Same,
+    Type(CellType),
+}
+
+impl MatchCell {
+    fn match_cell(&self, cell: Cell) -> bool {
+        match self {
+            MatchCell::Exact(cell_type) => {
+                *cell_type == cell.cell_type
+            },
+            MatchCell::Any => true,
+        }
     }
 }
+
+impl ModifyCell {
+    fn set_cell(&self, mut cell: Cell) -> Cell {
+        match self {
+            ModifyCell::Type(cell_type) => {
+                cell.cell_type = *cell_type
+            },
+            ModifyCell::Same => { },
+        }
+        cell
+    }
+}
+
+type NeighbourhoodCells = [Cell; 4];
+type NeighbourhoodPattern = [MatchCell; 4];
+type NeighbourhoodModifier = [ModifyCell; 4];
+
+struct CellRule {
+    probability: f64,
+    if_nb: NeighbourhoodPattern,
+    then_nb: NeighbourhoodModifier,
+}
+
+impl CellRule {
+    const fn new(probability: f64, if_nb: NeighbourhoodPattern, then_nb: NeighbourhoodModifier) -> CellRule {
+        CellRule {
+            probability,
+            if_nb,
+            then_nb,
+        }
+    }
+
+    fn match_if(&self, nb: NeighbourhoodCells) -> bool {
+        self.if_nb.iter()
+            .zip(nb.iter())
+            .all(|(pattern, cell)| pattern.match_cell(*cell) && rand() < self.probability)
+    }
+
+    fn set_then(&self, nb: NeighbourhoodCells) -> NeighbourhoodCells {
+        self.then_nb.iter()
+            .zip(nb.iter())
+            .map(|(pattern, cell)| pattern.set_cell(*cell))
+            .collect::<Vec<Cell>>()
+            .try_into()
+            .unwrap()
+    }
+}
+
+
+const RULES: &[CellRule] = &[
+    CellRule::new(1.0, [
+        MatchCell::Exact(CellType::Sand), MatchCell::Any,
+        MatchCell::Exact(CellType::Empty), MatchCell::Any,
+    ],
+    [
+        ModifyCell::Type(CellType::Empty), ModifyCell::Same,
+        ModifyCell::Type(CellType::Sand), ModifyCell::Same,
+    ]),
+    CellRule::new(1.0, [
+        MatchCell::Any, MatchCell::Exact(CellType::Sand),
+        MatchCell::Any, MatchCell::Exact(CellType::Empty),
+    ],
+    [
+        ModifyCell::Same, ModifyCell::Type(CellType::Empty),
+        ModifyCell::Same, ModifyCell::Type(CellType::Sand),
+    ]),
+    CellRule::new(1.0, [
+        MatchCell::Exact(CellType::Sand), MatchCell::Any,
+        MatchCell::Exact(CellType::Sand), MatchCell::Exact(CellType::Empty),
+    ],
+    [
+        ModifyCell::Type(CellType::Empty), ModifyCell::Same,
+        ModifyCell::Type(CellType::Sand),  ModifyCell::Type(CellType::Sand),
+    ]),
+    CellRule::new(1.0, [
+        MatchCell::Any,                    MatchCell::Exact(CellType::Sand),
+        MatchCell::Exact(CellType::Empty), MatchCell::Exact(CellType::Sand),
+    ],
+    [
+        ModifyCell::Same,                 ModifyCell::Type(CellType::Empty),
+        ModifyCell::Type(CellType::Sand), ModifyCell::Type(CellType::Sand),
+    ]),
+
+];
+
 
 pub struct CellularSim;
 
@@ -264,6 +366,14 @@ impl CellularSim {
 
                 let mut square = self.get_neighbourhood(space, x, y);
 
+                for rule in RULES {
+                    if rule.match_if(square) {
+                        square = rule.set_then(square);
+                        break;
+                    }
+                }
+
+/*
                 // Falling downwards rule (Gravity)
                 if square[0][0].1.density > square[1][0].1.density {
                     swap!(square[0][0], square[1][0]);
@@ -288,6 +398,7 @@ impl CellularSim {
                   && (square[1][1].0.cell_type == CellType::Water || square[1][1].0.cell_type == CellType::Empty) {
                     swap!(square[1][0], square[1][1]);
                 }
+*/
 
                 self.set_neighbourhood(space, x, y, &square);
             }
@@ -296,22 +407,19 @@ impl CellularSim {
 
 
 
-    fn get_neighbourhood(&self, space: &mut Space, x: i32, y: i32) -> [[(Cell, &CellTypeProperties); 2]; 2] {
+    fn get_neighbourhood(&self, space: &mut Space, x: i32, y: i32) -> [Cell; 4] {
         let cell1a = *space.get_cell_at(space.get_index(x as u32, y as u32));
         let cell1b = *space.get_cell_at(space.get_index(x as u32 + 1, y as u32));
         let cell2a = *space.get_cell_at(space.get_index(x as u32, y as u32 + 1));
         let cell2b = *space.get_cell_at(space.get_index(x as u32 + 1, y as u32 + 1));
-        [
-            [ (cell1a, cell1a.get_properties()), (cell1b, cell1b.get_properties()) ],
-            [ (cell2a, cell2a.get_properties()), (cell2b, cell2b.get_properties()) ]
-        ]
+        [ cell1a, cell1b, cell2a, cell2b ]
     }
 
-    fn set_neighbourhood(&self, space: &mut Space, x: i32, y: i32, square: &[[(Cell, &CellTypeProperties); 2]; 2]) {
-        space.set_cell(space.get_index(x as u32, y as u32), &square[0][0].0);
-        space.set_cell(space.get_index(x as u32 + 1, y as u32), &square[0][1].0);
-        space.set_cell(space.get_index(x as u32, y as u32 + 1), &square[1][0].0);
-        space.set_cell(space.get_index(x as u32 + 1, y as u32 + 1), &square[1][1].0);
+    fn set_neighbourhood(&self, space: &mut Space, x: i32, y: i32, square: &[Cell; 4]) {
+        space.set_cell(space.get_index(x as u32, y as u32), &square[0]);
+        space.set_cell(space.get_index(x as u32 + 1, y as u32), &square[1]);
+        space.set_cell(space.get_index(x as u32, y as u32 + 1), &square[2]);
+        space.set_cell(space.get_index(x as u32 + 1, y as u32 + 1), &square[3]);
     }
 
 }
