@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-docs:
+  build:
     runs-on: ubuntu-latest
 
     environment:
@@ -34,12 +34,13 @@ jobs:
         run: |
           wasm-pack build --release
           cd www
+          npm i
           npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: www/build
+          path: www/dist
 
       - name: Deploy to GitHub Pages
         id: deployment
