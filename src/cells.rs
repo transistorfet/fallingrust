@@ -1,45 +1,62 @@
-// This file defines the different types of cells (particles) in our falling sand simulation
-// and their properties like density, temperature behavior, and special characteristics.
+//! This file defines the different types of cells (particles) in our falling sand simulation
+//! and their properties like density, temperature behavior, and special characteristics.
 
 // Import the random number generator function from our main library
 use crate::rand;
 
-// This struct defines all the properties that each type of cell can have.
-// The #[derive] attribute automatically implements several traits for our struct:
-// - Copy: Allows the struct to be copied by value instead of moved
-// - Clone: Provides a method to explicitly create a copy
-// - Debug: Allows the struct to be printed with {:?} format
-// - PartialEq: Allows comparison with == and !=
+/// This struct defines all the properties that each type of cell can have.
+/// The #[derive] attribute automatically implements several traits for our struct:
+/// - Copy: Allows the struct to be copied by value instead of moved
+/// - Clone: Provides a method to explicitly create a copy
+/// - Debug: Allows the struct to be printed with {:?} format
+/// - PartialEq: Allows comparison with == and !=
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct CellTypeProperties {
-    pub name: &'static str,           // The display name of this cell type (static lifetime means it lives for the entire program)
-    pub cell_type: CellType,          // The enum variant representing this cell type
-    pub density: f64,                 // How dense this cell is (affects falling behavior)
-    pub temp_coefficient: f32,        // How quickly this cell heats up or cools down
-    pub flammable: bool,              // Whether this cell can catch fire
-    pub dissolvable: bool,            // Whether this cell can be dissolved by acid
+    /// The display name of this cell type (static lifetime means it lives for the entire program)
+    pub name: &'static str,
+    /// The enum variant representing this cell type
+    pub cell_type: CellType,
+    /// How dense this cell is (affects falling behavior)
+    pub density: f64,
+    /// How quickly this cell heats up or cools down
+    pub temp_coefficient: f32,
+    /// Whether this cell can catch fire
+    pub flammable: bool,
+    /// Whether this cell can be dissolved by acid
+    pub dissolvable: bool,
 }
 
-// This enum defines all the different types of cells in our simulation.
-// Each variant represents a different material or element.
-// The derive attributes work the same as for the struct above.
+/// This enum defines all the different types of cells in our simulation.
+/// Each variant represents a different material or element.
+/// The derive attributes work the same as for the struct above.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum CellType {
-    Empty,      // Empty space (air)
-    Rock,       // Solid rock that doesn't move
-    Wood,       // Solid wood that can burn
-    Sand,       // Granular material that falls
-    Gunpowder,  // Explosive material that can ignite
-    Water,      // Liquid that flows
-    Oil,        // Flammable liquid that's less dense than water
-    Propane,    // Flammable gas that rises
-    Fire,       // Flame that can spread to flammable materials
-    Lava,       // Hot liquid that can ignite things
-    Acid,       // Dissolves materials it touches
+    /// Empty space (air)
+    Empty,
+    /// Solid rock that doesn't move
+    Rock,
+    /// Solid wood that can burn
+    Wood,
+    /// Granular material that falls
+    Sand,
+    /// Explosive material that can ignite
+    Gunpowder,
+    /// Liquid that flows
+    Water,
+    /// Flammable liquid that's less dense than water
+    Oil,
+    /// Flammable gas that rises
+    Propane,
+    /// Flame that can spread to flammable materials
+    Fire,
+    /// Hot liquid that can ignite things
+    Lava,
+    /// Dissolves materials it touches
+    Acid,
 }
 
-// This static array contains all the cell types (except Empty) for easy iteration
-// Static means this array exists for the entire program and has a fixed size
+/// This static array contains all the cell types (except Empty) for easy iteration
+/// Static means this array exists for the entire program and has a fixed size
 static CELL_TYPES: [CellType; 10] = [
     CellType::Rock,
     CellType::Wood,
@@ -53,9 +70,9 @@ static CELL_TYPES: [CellType; 10] = [
     CellType::Acid,
 ];
 
-// This static array defines the specific properties for each cell type
-// The array must have an entry for each CellType variant, in the same order
-// as the enum definition above
+/// This static array defines the specific properties for each cell type
+/// The array must have an entry for each CellType variant, in the same order
+/// as the enum definition above
 static CELL_PROPERTIES: [CellTypeProperties; 11] = [
     // Empty cells have no density and minimal temperature effects
     CellTypeProperties {
@@ -158,10 +175,10 @@ static CELL_PROPERTIES: [CellTypeProperties; 11] = [
     },
 ];
 
-// This implementation block adds methods to the CellType enum
+/// This implementation block adds methods to the CellType enum
 impl CellType {
-    // Creates a random cell type, with a bias toward Empty cells
-    // This is used for debugging or for special effects in the simulation
+    /// Creates a random cell type, with a bias toward Empty cells
+    /// This is used for debugging or for special effects in the simulation
     pub fn random() -> CellType {
         // Generate a random number between 0 and 19 using our rand() function
         // Then use pattern matching to determine which cell type to return
@@ -173,32 +190,35 @@ impl CellType {
         }
     }
 
-    // Returns an iterator over all cell types (except Empty)
-    // The 'a lifetime parameter indicates how long the returned iterator is valid
+    /// Returns an iterator over all cell types (except Empty)
+    /// The 'a lifetime parameter indicates how long the returned iterator is valid
     pub fn iter<'a>() -> std::slice::Iter<'a, CellType> {
         CELL_TYPES.iter()    // Return an iterator to the CELL_TYPES array
     }
 
-    // Gets the properties for a given cell type
-    // The 'a lifetime parameter indicates how long the returned reference is valid
+    /// Gets the properties for a given cell type
+    /// The 'a lifetime parameter indicates how long the returned reference is valid
     pub fn get_properties<'a>(cell_type: CellType) -> &'a CellTypeProperties {
         // Look up the properties in the CELL_PROPERTIES array using the enum value as an index
         &CELL_PROPERTIES[cell_type as usize]
     }
 }
 
-// This struct represents an actual cell in the simulation grid
-// Each position in our grid contains one of these cells
+/// This struct represents an actual cell in the simulation grid
+/// Each position in our grid contains one of these cells
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Cell {
-    pub cell_type: CellType,     // What kind of material this cell is
-    pub generation: u8,          // Used to track updates in the simulation
-    pub temp: f32,               // The temperature of this cell, affects behavior
+    /// What kind of material this cell is
+    pub cell_type: CellType,
+    /// Used to track updates in the simulation
+    pub generation: u8,
+    /// The temperature of this cell, affects behavior
+    pub temp: f32,
 }
 
-// This implementation block adds methods to the Cell struct
+/// This implementation block adds methods to the Cell struct
 impl Cell {
-    // Creates a new empty cell (air)
+    /// Creates a new empty cell (air)
     pub fn empty() -> Cell {
         Cell {
             cell_type: CellType::Empty,
@@ -207,8 +227,8 @@ impl Cell {
         }
     }
 
-    // Creates a cell with a random type
-    // The #[allow(dead_code)] attribute silences warnings about this function not being used
+    /// Creates a cell with a random type
+    /// The #[allow(dead_code)] attribute silences warnings about this function not being used
     #[allow(dead_code)]
     pub fn random() -> Cell {
         Cell {
@@ -218,7 +238,7 @@ impl Cell {
         }
     }
 
-    // Initializes a cell with a specific type, setting appropriate properties
+    /// Initializes a cell with a specific type, setting appropriate properties
     pub fn init(&mut self, cell_type: CellType) {
         self.cell_type = cell_type;
 
@@ -230,8 +250,8 @@ impl Cell {
         }
     }
 
-    // Gets the properties for this cell's type
-    // Convenience method that delegates to CellType::get_properties
+    /// Gets the properties for this cell's type
+    /// Convenience method that delegates to CellType::get_properties
     pub fn get_properties<'a>(&self) -> &'a CellTypeProperties {
         CellType::get_properties(self.cell_type)
     }

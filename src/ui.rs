@@ -1,5 +1,5 @@
-// This file handles the user interface for our simulation.
-// It connects our Rust code to the browser's DOM and handles rendering and user input.
+//! This file handles the user interface for our simulation.
+//! It connects our Rust code to the browser's DOM and handles rendering and user input.
 
 // Import standard library components for reference counting and interior mutability
 use std::rc::Rc;
@@ -23,9 +23,9 @@ use crate::timer::Timer;
 #[allow(unused_imports)]
 use crate::{ alert, log};
 
-// Main function to initialize the DOM and set up all event handlers
-// Takes a reference-counted, refcell-wrapped World instance that will be shared
-// among event handlers
+/// Main function to initialize the DOM and set up all event handlers
+/// Takes a reference-counted, refcell-wrapped World instance that will be shared
+/// among event handlers
 pub fn init_dom(world: Rc<RefCell<World>>) {
     // Get references to the browser's window and document objects
     let window = web_sys::window().unwrap();
@@ -48,7 +48,7 @@ pub fn init_dom(world: Rc<RefCell<World>>) {
     init_draw_events(&window, canvas, world.clone()); // Animation loop for rendering
 }
 
-// Sets up event handlers for UI buttons and creates cell type selection buttons
+/// Sets up event handlers for UI buttons and creates cell type selection buttons
 fn init_button_events(document: &Document, world: Rc<RefCell<World>>) {
     // Set up the play/pause button
     {
@@ -73,7 +73,7 @@ fn init_button_events(document: &Document, world: Rc<RefCell<World>>) {
     }
 }
 
-// Creates a button for selecting a specific cell type
+/// Creates a button for selecting a specific cell type
 fn create_select_button(document: &Document, container: &HtmlElement, world: Rc<RefCell<World>>, name: &str, cell_type: CellType) {
     // Create a button with the given name that updates the selected cell type when clicked
     container.append_child(&create_button(&document, name, move || {
@@ -81,7 +81,7 @@ fn create_select_button(document: &Document, container: &HtmlElement, world: Rc<
     })).unwrap();
 }
 
-// Helper function to create a button element with a click handler
+/// Generic function to create a button element with the given name and click handler
 fn create_button<F>(document: &Document, name: &str, f: F) -> HtmlElement 
     where F: 'static + Fn() -> () { // Function type constraint: must be static and take no arguments
     // Wrap the Rust closure in a form that can be called from JavaScript
@@ -102,7 +102,7 @@ fn create_button<F>(document: &Document, name: &str, f: F) -> HtmlElement
     el // Return the button element
 }
 
-// Attaches a click handler to an existing DOM element by ID
+/// Registers a click event handler for an element with the given ID
 fn register_click<F>(document: &Document, element_id: &str, f: F) 
     where F: 'static + Fn() -> () {
     // Wrap the Rust closure in a form that can be called from JavaScript
@@ -118,7 +118,7 @@ fn register_click<F>(document: &Document, element_id: &str, f: F)
     cb.forget();
 }
 
-// Sets up mouse event handlers on the canvas
+/// Sets up mouse event handlers for the canvas
 fn init_mouse_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
     // Mouse down (button press) handler
     {
@@ -162,7 +162,7 @@ fn init_mouse_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
     }
 }
 
-// Sets up touch event handlers on the canvas (for mobile devices)
+/// Sets up touch event handlers for the canvas (for mobile devices)
 fn init_touch_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
     // Touch start handler (finger touches screen)
     {
@@ -205,7 +205,7 @@ fn init_touch_events(canvas: &HtmlCanvasElement, world: Rc<RefCell<World>>) {
     }
 }
 
-// Sets up the animation loop for rendering the simulation
+/// Sets up the animation loop and rendering
 fn init_draw_events(window: &Window, canvas: HtmlCanvasElement, world: Rc<RefCell<World>>) { 
     let mut drawing = false;  // Flag to prevent overlapping draw operations
     //let mut timer = Timer::start();  // Uncommented timer for performance measurement
@@ -240,7 +240,7 @@ fn init_draw_events(window: &Window, canvas: HtmlCanvasElement, world: Rc<RefCel
     render_frame.forget();
 }
 
-// Draws the current simulation state to the canvas
+/// Renders the current state of the simulation to the canvas
 fn draw_canvas(canvas: &HtmlCanvasElement, space: &Space) {
     // Get the 2D rendering context from the canvas
     let context = canvas
@@ -278,7 +278,7 @@ fn draw_canvas(canvas: &HtmlCanvasElement, space: &Space) {
     }
 }
 
-// Converts a cell type to its display color
+/// Converts a cell type to a CSS color string
 fn cell_type_to_colour(cell_type: CellType) -> &'static str {
     match cell_type {
         CellType::Empty => "#FFFFFF",      // White

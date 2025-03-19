@@ -1,21 +1,25 @@
-// This file defines the simulation space (grid) that contains all the cells.
-// It manages the 2D grid layout and provides methods to access and manipulate cells.
+//! This file defines the simulation space (grid) that contains all the cells.
+//! It manages the 2D grid layout and provides methods to access and manipulate cells.
 
 // Import the Cell and CellType from our cells module
 use crate::cells::{ Cell, CellType };
 
-// The Space struct represents the entire simulation grid
-// It keeps track of dimensions, all cells, and the current simulation generation
+/// The Space struct represents the entire simulation grid
+/// It keeps track of dimensions, all cells, and the current simulation generation
 pub struct Space {
-    width: u32,                  // Width of the grid in cells
-    height: u32,                 // Height of the grid in cells
-    generation: u8,              // Current simulation step/generation (used for update tracking)
-    cells: Vec<Cell>,            // A flat vector storing all cells in row-major order
+    /// Width of the grid in cells
+    width: u32,
+    /// Height of the grid in cells
+    height: u32,
+    /// Current simulation step/generation (used for update tracking)
+    generation: u8,
+    /// A flat vector storing all cells in row-major order
+    cells: Vec<Cell>,
 }
 
 impl Space {
-    // Creates a new Space with the given dimensions
-    // Initializes all cells as empty (air)
+    /// Creates a new Space with the given dimensions
+    /// Initializes all cells as empty (air)
     pub fn new(width: u32, height: u32) -> Self {
         // Calculate the total number of cells needed
         let length = width * height;
@@ -36,49 +40,48 @@ impl Space {
         }
     }
 
-    // Returns the width of the space
+    /// Returns the width of the space
     pub fn get_width(&self) -> u32 {
         self.width
     }
 
-    // Returns the height of the space
+    /// Returns the height of the space
     pub fn get_height(&self) -> u32 {
         self.height
     }
 
-    // Returns the current generation/tick of the simulation
-    // This is used to track which cells have been updated in the current simulation step
+    /// Returns the current generation/tick of the simulation
+    /// This is used to track which cells have been updated in the current simulation step
     pub fn get_generation(&self) -> u8 {
         self.generation
     }
 
-    // Advances the simulation to the next generation/tick
-    // This wraps around back to 0 after 255 due to u8 data type
+    /// Increments the generation counter for the simulation
+    /// This is called at the end of each simulation step
     pub fn increment_generation(&mut self) {
         self.generation += 1;
     }
 
-    // Marks a cell as updated in the current generation
-    // This prevents a cell from being updated multiple times in one simulation step
+    /// Updates the generation of a specific cell to match the current simulation generation
+    /// This marks the cell as "updated" for the current simulation step
     pub fn update_cell_generation(&mut self, i: usize) {
         self.cells[i].generation = self.generation;
     }
 
-    // Checks if a cell needs updating in the current generation
-    // Returns true if the cell hasn't been updated yet in this generation
+    /// Checks if a cell needs updating in the current simulation step
+    /// Returns true if the cell's generation doesn't match the current simulation generation
     pub fn cell_needs_updating(&self, i: usize) -> bool {
         self.generation != self.cells[i].generation
     }
 
-    // Converts 2D coordinates (x,y) to a 1D array index
-    // This is needed because we store our 2D grid as a flat vector
+    /// Converts 2D coordinates to a 1D array index
+    /// This is used to access cells in our flat vector
     pub fn get_index(&self, x: u32, y: u32) -> usize {
         (x + (y * self.width)) as usize
     }
 
-    // Similar to get_index, but checks if the coordinates are valid (within bounds)
-    // Returns None if the coordinates are outside the grid
-    // Returns Some(index) if the coordinates are valid
+    /// Converts 2D coordinates to a 1D array index, with bounds checking
+    /// Returns None if the coordinates are outside the grid boundaries
     pub fn get_index_checked(&self, x: i32, y: i32) -> Option<usize> {
         // Check if the coordinates are within bounds
         if x < 0 || x >= self.width as i32 || y < 0 || y >= self.height as i32 {
@@ -89,8 +92,8 @@ impl Space {
         }
     }
 
-    // Adds cells of the specified type in a 5x5 area centered at (x,y)
-    // This is used for the "brush" tool when drawing in the simulation
+    /// Adds a cell of the specified type at the given coordinates
+    /// Used for placing cells with the mouse
     pub fn add(&mut self, x: i32, y: i32, cell_type: CellType) {
         let mut created = 0;
         // Loop through a 5x5 grid centered at (x,y)
@@ -109,26 +112,24 @@ impl Space {
         }
     }
 
-    // Gets the cell type at the specified coordinates
+    /// Gets the cell type at the specified coordinates
     pub fn get_cell_type(&self, x: u32, y: u32) -> CellType {
         let i = self.get_index(x, y);
         self.cells[i].cell_type
     }
 
-    // Gets a mutable reference to the cell at the specified index
-    // The lifetime parameter 'a indicates that the returned reference
-    // has the same lifetime as the Space reference
+    /// Gets a mutable reference to the cell at the specified index
     pub fn get_cell_at<'a>(&'a mut self, i: usize) -> &'a mut Cell {
         &mut self.cells[i]
     }
 
-    // Gets the cell type at the specified index without returning the whole cell
+    /// Gets the cell type at the specified index
     pub fn get_cell_type_at(&self, i: usize) -> CellType {
         self.cells[i].cell_type
     }
 
-    // Swaps two cells within the space
-    // This is a key operation for simulating falling and flowing materials
+    /// Swaps two cells in the grid
+    /// Used by the simulation algorithm to move cells
     pub fn swap_cells(&mut self, i: usize, j: usize) {
         // Store the cell at index i
         let i_cell = self.cells[i];
@@ -141,7 +142,7 @@ impl Space {
         self.cells[i].generation = self.generation;
     }
 
-    // Replaces a cell at the specified index with a copy of the given cell
+    /// Sets a cell at the specified index to be a copy of the provided cell
     pub fn set_cell(&mut self, i: usize, cell: &Cell) {
         // Copy the cell to the specified index
         self.cells[i] = *cell;

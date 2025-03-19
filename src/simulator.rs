@@ -1,5 +1,5 @@
-// This file contains the core simulation logic for our falling sand game.
-// It defines how different cell types behave and interact with each other.
+//! This file contains the core simulation logic for our falling sand game.
+//! It defines how different cell types behave and interact with each other.
 
 use std::convert::TryInto;
 
@@ -10,18 +10,18 @@ use crate::{ log, rand, debug_print };
 use crate::space::Space;
 use crate::cells::{ Cell, CellType, CellTypeProperties };
 
-// The Simulator trait defines a common interface for different simulation approaches
-// Any struct that implements this trait can be used as the simulation engine
+/// The Simulator trait defines a common interface for different simulation approaches
+/// Any struct that implements this trait can be used as the simulation engine
 pub trait Simulator {
-    // The tick method advances the simulation by one time step
+    /// The tick method advances the simulation by one time step
     fn tick(&mut self, space: &mut Space);
 }
 
-// SwappingSim is our main simulation implementation
-// It uses a simple "swapping" approach where cells can exchange places with their neighbors
+/// SwappingSim is our main simulation implementation
+/// It uses a simple "swapping" approach where cells can exchange places with their neighbors
 pub struct SwappingSim;
 
-// Implement the Simulator trait for SwappingSim
+/// Implement the Simulator trait for SwappingSim
 impl Simulator for SwappingSim {
     fn tick(&mut self, space: &mut Space) {
         // Delegate to our main simulation method
@@ -30,7 +30,7 @@ impl Simulator for SwappingSim {
 }
 
 impl SwappingSim {
-    // The main simulation method that advances the simulation by one time step
+    /// The main simulation method that advances the simulation by one time step
     pub fn advance(&mut self, space: &mut Space) {
         // Increment the generation counter (used to track which cells have been updated)
         space.increment_generation();
@@ -58,7 +58,7 @@ impl SwappingSim {
         }
     }
 
-    // Simulates a single cell based on its type and neighbors
+    /// Simulates behavior for a single cell based on its type
     pub fn simulate_cell(&mut self, space: &mut Space, x: i32, y: i32) {
         // Get the index and cell at the current position
         let i = space.get_index(x as u32, y as u32);
@@ -162,8 +162,7 @@ impl SwappingSim {
         }
     }
 
-    // Movement logic for granular materials (sand, gunpowder)
-    // These fall downward and can slide diagonally, but don't spread horizontally
+    /// Handles movement for granular materials like sand
     fn move_granular(&mut self, space: &mut Space, x: i32, y: i32) {
         let i = space.get_index(x as u32, y as u32);
         // Randomly choose left or right for the diagonal movement
@@ -179,8 +178,7 @@ impl SwappingSim {
         self.check_swap_from_list(space, i, check, SwappingSim::check_density);
     }
 
-    // Movement logic for liquids (water, oil)
-    // These fall downward, can spread horizontally, and flow around obstacles
+    /// Handles movement for liquids like water and oil
     fn move_liquid(&mut self, space: &mut Space, x: i32, y: i32) {
         let i = space.get_index(x as u32, y as u32);
         // Randomly choose left or right for the horizontal movement
@@ -199,8 +197,7 @@ impl SwappingSim {
         self.check_swap_from_list(space, i, check, SwappingSim::check_density);
     }
 
-    // Movement logic for gases (propane)
-    // These rise upward and spread in random directions
+    /// Handles movement for gases like propane
     fn move_gas(&mut self, space: &mut Space, x: i32, y: i32) {
         let i = space.get_index(x as u32, y as u32);
         // Get random horizontal and vertical movement
@@ -216,8 +213,7 @@ impl SwappingSim {
         self.check_swap_from_list(space, i, check, SwappingSim::check_density);
     }
 
-    // Creates a new cell in one of the positions adjacent to (x,y)
-    // Used for fire spreading to neighboring cells
+    /// Creates a new cell at the specified position
     fn spawn_new(&mut self, space: &mut Space, x: i32, y: i32, cell: Cell) {
         // Randomly choose directions
         let dx = if rand() > 0.5 { 1 } else { -1 };
@@ -243,7 +239,7 @@ impl SwappingSim {
         }
     }
 
-    // Handles temperature transfer and ignition of neighboring cells
+    /// Attempts to ignite flammable neighbors around hot cells
     fn ignite_neighbours(&mut self, temp: f32, space: &mut Space, x: i32, y: i32) {
         /*
         // This code is commented out in the original - it would simulate heat transfer
@@ -272,14 +268,12 @@ impl SwappingSim {
         });
     }
 
-    // Determines if a cell can swap positions with another based on density
-    // Returns true if the source should displace the destination
+    /// Checks if a cell can move to another position based on density
     fn check_density(source: &CellTypeProperties, dest: &CellTypeProperties) -> bool {
         source.density > dest.density
     }
 
-    // Checks if a cell can swap with any cell in a list of positions
-    // Swaps with the first valid position in the list
+    /// Tries to swap the cell at index i with one of the cells in the provided list
     fn check_swap_from_list(&mut self, space: &mut Space, i: usize, list: Vec<(i32, i32)>, can_move: fn(&CellTypeProperties, &CellTypeProperties) -> bool) {
         for (x, y) in list.iter() {
             // Check if this position is within bounds
@@ -297,8 +291,7 @@ impl SwappingSim {
         }
     }
 
-    // Runs a function on each neighboring cell
-    // This is a higher-order function that takes a closure to apply to each neighbor
+    /// Applies a function to each neighbor of a cell
     fn foreach_neighbour<F>(&mut self, space: &mut Space, x: i32, y: i32, mut f: F) 
         where F: FnMut(&mut Cell, &CellTypeProperties) {
         // Check all 8 surrounding cells
@@ -322,18 +315,24 @@ impl SwappingSim {
     }
 }
 
+/// Defines a pattern to match against for cellular automaton rules
 enum MatchCell {
+    /// Matches exactly the specified cell type
     Exact(CellType),
-    //EmptyOr(CellType),
+    /// Matches any cell type
     Any,
 }
 
+/// Defines how to modify a cell for cellular automaton rules
 enum ModifyCell {
+    /// Keep the cell type the same
     Same,
+    /// Change the cell type to the specified type
     Type(CellType),
 }
 
 impl MatchCell {
+    /// Checks if this pattern matches the given cell
     fn match_cell(&self, cell: Cell) -> bool {
         match self {
             MatchCell::Exact(cell_type) => {
@@ -345,6 +344,7 @@ impl MatchCell {
 }
 
 impl ModifyCell {
+    /// Applies the modification to the given cell
     fn set_cell(&self, mut cell: Cell) -> Cell {
         match self {
             ModifyCell::Type(cell_type) => {
@@ -356,17 +356,25 @@ impl ModifyCell {
     }
 }
 
+/// A 2x2 neighborhood of cells
 type NeighbourhoodCells = [Cell; 4];
+/// A pattern to match against a 2x2 neighborhood
 type NeighbourhoodPattern = [MatchCell; 4];
+/// A set of modifications to apply to a 2x2 neighborhood
 type NeighbourhoodModifier = [ModifyCell; 4];
 
+/// A rule for cellular automaton simulation
 struct CellRule {
+    /// Probability (0-1) that this rule will be applied when matched
     probability: f64,
+    /// Pattern to match against
     if_nb: NeighbourhoodPattern,
+    /// Modifications to apply when matched
     then_nb: NeighbourhoodModifier,
 }
 
 impl CellRule {
+    /// Creates a new cell rule
     const fn new(probability: f64, if_nb: NeighbourhoodPattern, then_nb: NeighbourhoodModifier) -> CellRule {
         CellRule {
             probability,
@@ -375,12 +383,14 @@ impl CellRule {
         }
     }
 
+    /// Checks if this rule's pattern matches the given neighborhood
     fn match_if(&self, nb: NeighbourhoodCells) -> bool {
         self.if_nb.iter()
             .zip(nb.iter())
             .all(|(pattern, cell)| pattern.match_cell(*cell) && rand() < self.probability)
     }
 
+    /// Applies this rule's modifications to the given neighborhood
     fn set_then(&self, nb: NeighbourhoodCells) -> NeighbourhoodCells {
         self.then_nb.iter()
             .zip(nb.iter())
@@ -426,6 +436,7 @@ const RULES: &[CellRule] = &[
     ]),
 ];
 
+/// Alternative simulation implementation using cellular automaton rules
 pub struct CellularSim;
 
 impl Simulator for CellularSim {
@@ -435,6 +446,7 @@ impl Simulator for CellularSim {
 }
 
 impl CellularSim {
+    /// Advances the cellular automaton simulation by one step
     pub fn advance(&mut self, space: &mut Space) {
         space.increment_generation();
         let start = if space.get_generation() % 2 == 0 { 0 } else { 1 };
@@ -484,6 +496,7 @@ impl CellularSim {
         }
     }
 
+    /// Gets the 2x2 neighborhood of cells at the specified position
     fn get_neighbourhood(&self, space: &mut Space, x: i32, y: i32) -> [Cell; 4] {
         let cell1a = *space.get_cell_at(space.get_index(x as u32, y as u32));
         let cell1b = *space.get_cell_at(space.get_index(x as u32 + 1, y as u32));
@@ -492,6 +505,7 @@ impl CellularSim {
         [ cell1a, cell1b, cell2a, cell2b ]
     }
 
+    /// Sets the 2x2 neighborhood of cells at the specified position
     fn set_neighbourhood(&self, space: &mut Space, x: i32, y: i32, square: &[Cell; 4]) {
         space.set_cell(space.get_index(x as u32, y as u32), &square[0]);
         space.set_cell(space.get_index(x as u32 + 1, y as u32), &square[1]);
@@ -500,6 +514,7 @@ impl CellularSim {
     }
 }
 
+/// Generates a random value for adding variation to simulation
 fn random_modifier() -> i32 {
     match rand() {
         x if x < 0.33 => 1,

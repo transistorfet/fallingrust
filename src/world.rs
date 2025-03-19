@@ -1,22 +1,29 @@
-// This file defines the World struct, which brings together all the components
-// of our simulation: the space (grid), input handling, and simulation logic.
+//! This file defines the World struct, which brings together all the components
+//! of our simulation: the space (grid), input handling, and simulation logic.
 
 // Import the components we need for our world
-use crate::space::Space;                            // The grid where cells live
-use crate::input::InputTracker;                     // Tracks user input
-use crate::simulator::{ Simulator, SwappingSim, CellularSim }; // Simulation algorithms
+/// The grid where cells live
+use crate::space::Space;
+/// Tracks user input
+use crate::input::InputTracker;
+/// Simulation algorithms
+use crate::simulator::{ Simulator, SwappingSim, CellularSim };
 
-// The World struct is the main container for our simulation
-// It coordinates all the different parts and represents the entire game state
+/// The World struct is the main container for our simulation
+/// It coordinates all the different parts and represents the entire game state
 pub struct World {
-    pub run: bool,                 // Whether the simulation is currently running or paused
-    pub space: Space,              // The grid containing all our cells
-    pub input: InputTracker,       // Tracks user mouse input
-    simulator: Box<dyn Simulator>, // The simulation algorithm to use (boxed trait object)
+    /// Whether the simulation is currently running or paused
+    pub run: bool,
+    /// The grid containing all our cells
+    pub space: Space,
+    /// Tracks user mouse input
+    pub input: InputTracker,
+    /// The simulation algorithm to use (boxed trait object)
+    simulator: Box<dyn Simulator>,
 }
 
 impl World {
-    // Creates a new world with the given dimensions
+    /// Creates a new world with the given dimensions
     pub fn new(width: u32, height: u32) -> World {
         World {
             run: true,                        // Start with the simulation running
@@ -27,17 +34,17 @@ impl World {
         }
     }
 
-    // Toggles whether the simulation is running or paused
+    /// Toggles whether the simulation is running or paused
     pub fn toggle_run(&mut self) {
         self.run = !self.run; // Flip the boolean value
     }
 
-    // Returns whether the simulation is currently running
+    /// Returns whether the simulation is currently running
     pub fn is_running(&self) -> bool {
         self.run
     }
 
-    // Advances the simulation by one step
+    /// Advances the simulation by one step
     pub fn advance_simulation(&mut self) {
         // If the mouse is down, get its position and add cells
         if let Some((x, y)) = self.input.get_pos() {
