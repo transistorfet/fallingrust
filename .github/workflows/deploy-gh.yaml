@@ -42,8 +42,11 @@ jobs:
           cargo doc --document-private-items --workspace --all-features
           cp -R target/doc www/dist/
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: www/dist
 
