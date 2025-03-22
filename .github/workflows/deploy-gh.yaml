@@ -19,7 +19,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
       - uses: actions-rs/toolchain@v1
         with:
@@ -36,6 +36,11 @@ jobs:
           cd www
           npm i
           npm run build
+
+      - name: Build docs
+        run: |
+          cargo doc --document-private-items --workspace
+          cp -R target/doc www/dist/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1

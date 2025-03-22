@@ -1,0 +1,28 @@
+name: clippy
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Select rust version
+        run: |
+          rustup toolchain install 1.70 --profile minimal --no-self-update
+          rustup default 1.70
+          rustup component add clippy
+
+      - name: Check clippy
+        run: |
+          cargo clippy --workspace
