@@ -4,8 +4,7 @@ version = "Two"
 max_width = 132
 
 struct_lit_width = 0    # default 18 (24)
-fn_call_width=100       # default 60 (80)
-array_width=132         # default 60 (80)
+array_width=130         # default 60 (80)
 #chain_width=100        # default 60 (80)
 #attr_fn_like_width=100  # default 70 (92)
 #single_line_if_else_max_width=100  # default 50 (66)
