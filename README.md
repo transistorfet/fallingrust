@@ -7,6 +7,8 @@ Falling Rust
 A simple falling sand game written in Rust and compiled to Web Assembly.  A demo is available
 at [https://transistorfet.github.io/fallingrust/](https://transistorfet.github.io/fallingrust/)
 
+Documentation, provided by @wolfgangmeyers: [https://jabberwocky.ca/fallingrust/doc/fallingrust/](https://jabberwocky.ca/fallingrust/doc/fallingrust/)
+
 Running
 -------
 
